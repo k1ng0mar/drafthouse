@@ -141,6 +141,11 @@ def build_parser() -> argparse.ArgumentParser:
     p_sc = sub.add_parser("selfcheck", help="Print L2 5-dim pre-emit prompt")
     p_sc.set_defaults(func=cmd_selfcheck)
 
+    from drafthouse.refs_cli import build_refs_parser, build_vision_parser
+
+    build_refs_parser(sub)
+    build_vision_parser(sub)
+
     return parser
 
 

@@ -1,0 +1,681 @@
+{
+  "version": "2026.09.18",
+  "count": 57,
+  "categories": [
+    "3d",
+    "animation",
+    "bento",
+    "buttons",
+    "color",
+    "components",
+    "ctas",
+    "curated",
+    "design-systems",
+    "error-pages",
+    "footers",
+    "grids",
+    "heroes",
+    "icons",
+    "illustration",
+    "landing-pages",
+    "latest",
+    "microinteractions",
+    "minimal",
+    "navbars",
+    "one-pagers",
+    "pricing",
+    "product-ui",
+    "rebrands",
+    "saas-frames",
+    "saas-sites",
+    "saas-ui",
+    "sections",
+    "texture",
+    "themes",
+    "type",
+    "ui-components",
+    "web-inspo"
+  ],
+  "usage": "Study structure and hierarchy. Do not clone layouts pixel-for-pixel. Prefer on-brand adaptation via DESIGN.md tokens.",
+  "references": [
+    {
+      "id": "navbar-gallery",
+      "category": "navbars",
+      "name": "Navbar Gallery",
+      "url": "https://navbar.gallery",
+      "best_for": "Real product navbars \u2014 density, mega-menus, mobile drawers",
+      "tags": [
+        "nav",
+        "header",
+        "menu"
+      ]
+    },
+    {
+      "id": "supahero",
+      "category": "heroes",
+      "name": "Supahero",
+      "url": "https://supahero.io",
+      "best_for": "Hero sections \u2014 headline hierarchy, media, CTAs",
+      "tags": [
+        "hero",
+        "landing",
+        "above-fold"
+      ]
+    },
+    {
+      "id": "hero-head",
+      "category": "heroes",
+      "name": "Hero Head",
+      "url": "https://hero.head.dev",
+      "best_for": "Hero composition variants",
+      "tags": [
+        "hero"
+      ]
+    },
+    {
+      "id": "404s-design",
+      "category": "error-pages",
+      "name": "404s.design",
+      "url": "https://404s.design",
+      "best_for": "404 / empty / error page patterns",
+      "tags": [
+        "404",
+        "error",
+        "empty-state"
+      ]
+    },
+    {
+      "id": "footer-design",
+      "category": "footers",
+      "name": "Footer.design",
+      "url": "https://footer.design",
+      "best_for": "Footer IA, link tiers, legal rows",
+      "tags": [
+        "footer",
+        "sitemap"
+      ]
+    },
+    {
+      "id": "cta-gallery",
+      "category": "ctas",
+      "name": "CTA Gallery",
+      "url": "https://cta.gallery",
+      "best_for": "Call-to-action blocks and button copy patterns",
+      "tags": [
+        "cta",
+        "conversion",
+        "buttons"
+      ]
+    },
+    {
+      "id": "unsection",
+      "category": "sections",
+      "name": "Unsection",
+      "url": "https://unsection.com",
+      "best_for": "Page sections \u2014 features, pricing, social proof blocks",
+      "tags": [
+        "sections",
+        "layout"
+      ]
+    },
+    {
+      "id": "60fps-design",
+      "category": "animation",
+      "name": "60fps.design",
+      "url": "https://60fps.design",
+      "best_for": "Smooth web animation references (restrained motion)",
+      "tags": [
+        "animation",
+        "motion",
+        "scroll"
+      ]
+    },
+    {
+      "id": "designspells",
+      "category": "microinteractions",
+      "name": "Design Spells",
+      "url": "https://designspells.com",
+      "best_for": "Microinteractions \u2014 hovers, toggles, feedback",
+      "tags": [
+        "microinteraction",
+        "ux",
+        "hover"
+      ]
+    },
+    {
+      "id": "bentogrids",
+      "category": "bento",
+      "name": "Bento Grids",
+      "url": "https://bentogrids.com",
+      "best_for": "Bento / modular grid compositions",
+      "tags": [
+        "bento",
+        "grid",
+        "cards"
+      ]
+    },
+    {
+      "id": "rebrand-gallery",
+      "category": "rebrands",
+      "name": "Rebrand.gallery",
+      "url": "https://rebrand.gallery",
+      "best_for": "Rebrand case studies \u2014 systems before screenshots",
+      "tags": [
+        "brand",
+        "rebrand",
+        "identity"
+      ]
+    },
+    {
+      "id": "gridddy",
+      "category": "grids",
+      "name": "Gridddy",
+      "url": "https://gridddy.framer.website",
+      "best_for": "Grid layout systems",
+      "tags": [
+        "grid",
+        "layout",
+        "columns"
+      ]
+    },
+    {
+      "id": "onepagelove-og",
+      "category": "one-pagers",
+      "name": "One Page Love OG",
+      "url": "https://onepagelove.com/og",
+      "best_for": "One-pager structures",
+      "tags": [
+        "onepager",
+        "landing"
+      ]
+    },
+    {
+      "id": "saaspo",
+      "category": "saas-sites",
+      "name": "Saaspo",
+      "url": "https://saaspo.com",
+      "best_for": "SaaS marketing sites by pattern",
+      "tags": [
+        "saas",
+        "marketing"
+      ]
+    },
+    {
+      "id": "landing-love",
+      "category": "landing-pages",
+      "name": "Landing.love",
+      "url": "https://landing.love",
+      "best_for": "Landing page breakdowns",
+      "tags": [
+        "landing",
+        "hero",
+        "pricing"
+      ]
+    },
+    {
+      "id": "saasframe",
+      "category": "saas-frames",
+      "name": "Saasframe",
+      "url": "https://saasframe.io",
+      "best_for": "SaaS UI frames / marketing modules",
+      "tags": [
+        "saas",
+        "ui",
+        "frames"
+      ]
+    },
+    {
+      "id": "refero-styles",
+      "category": "product-ui",
+      "name": "Refero Styles",
+      "url": "https://styles.refero.design",
+      "best_for": "Product UI style extracts from real apps",
+      "tags": [
+        "product-ui",
+        "dashboard",
+        "app"
+      ]
+    },
+    {
+      "id": "refero",
+      "category": "product-ui",
+      "name": "Refero",
+      "url": "https://refero.design",
+      "best_for": "Product screen library",
+      "tags": [
+        "product-ui",
+        "flows"
+      ]
+    },
+    {
+      "id": "mobbin",
+      "category": "product-ui",
+      "name": "Mobbin",
+      "url": "https://mobbin.com",
+      "best_for": "Mobile + web product UI flows",
+      "tags": [
+        "mobile",
+        "product-ui",
+        "flows"
+      ]
+    },
+    {
+      "id": "pageflows",
+      "category": "product-ui",
+      "name": "Page Flows",
+      "url": "https://pageflows.com",
+      "best_for": "User flow recordings / UX patterns",
+      "tags": [
+        "ux",
+        "flows",
+        "onboarding"
+      ]
+    },
+    {
+      "id": "recent-design",
+      "category": "latest",
+      "name": "Recent.design",
+      "url": "https://recent.design",
+      "best_for": "Latest shipped designs",
+      "tags": [
+        "recent",
+        "trends"
+      ]
+    },
+    {
+      "id": "curated-design",
+      "category": "curated",
+      "name": "Curated.design",
+      "url": "https://curated.design",
+      "best_for": "Curated site collections",
+      "tags": [
+        "curated",
+        "gallery"
+      ]
+    },
+    {
+      "id": "webinspoo",
+      "category": "web-inspo",
+      "name": "Webinspoo",
+      "url": "https://webinspoo.com",
+      "best_for": "Web inspiration feed",
+      "tags": [
+        "inspo",
+        "web"
+      ]
+    },
+    {
+      "id": "godly",
+      "category": "web-inspo",
+      "name": "Godly",
+      "url": "https://godly.website",
+      "best_for": "High-craft marketing sites",
+      "tags": [
+        "inspo",
+        "marketing",
+        "craft"
+      ]
+    },
+    {
+      "id": "awwwards",
+      "category": "web-inspo",
+      "name": "Awwwards",
+      "url": "https://awwwards.com",
+      "best_for": "Awarded sites \u2014 study craft, not gimmicks",
+      "tags": [
+        "awwwards",
+        "craft"
+      ]
+    },
+    {
+      "id": "lapa-ninja",
+      "category": "landing-pages",
+      "name": "Lapa Ninja",
+      "url": "https://www.lapa.ninja",
+      "best_for": "Landing page gallery",
+      "tags": [
+        "landing",
+        "gallery"
+      ]
+    },
+    {
+      "id": "land-book",
+      "category": "landing-pages",
+      "name": "Land-book",
+      "url": "https://land-book.com",
+      "best_for": "Landing page catalog",
+      "tags": [
+        "landing"
+      ]
+    },
+    {
+      "id": "vantaui",
+      "category": "ui-components",
+      "name": "Vanta UI",
+      "url": "https://vantaui.com",
+      "best_for": "UI component gallery",
+      "tags": [
+        "components",
+        "ui"
+      ]
+    },
+    {
+      "id": "simply-buttons",
+      "category": "buttons",
+      "name": "Simply Buttons",
+      "url": "https://simply-buttons.vercel.app",
+      "best_for": "Button styles and states",
+      "tags": [
+        "buttons",
+        "controls"
+      ]
+    },
+    {
+      "id": "mesh3d",
+      "category": "3d",
+      "name": "Mesh3D Gallery",
+      "url": "https://mesh3d.gallery",
+      "best_for": "3D website references \u2014 use sparingly",
+      "tags": [
+        "3d",
+        "webgl"
+      ]
+    },
+    {
+      "id": "dark-design",
+      "category": "themes",
+      "name": "Dark Design",
+      "url": "https://www.dark.design",
+      "best_for": "Dark-mode UI references",
+      "tags": [
+        "dark",
+        "theme"
+      ]
+    },
+    {
+      "id": "shiny-design",
+      "category": "themes",
+      "name": "Shiny Design",
+      "url": "https://www.shiny.design",
+      "best_for": "Polished dark UI + motion",
+      "tags": [
+        "dark",
+        "polish"
+      ]
+    },
+    {
+      "id": "pricing-page",
+      "category": "pricing",
+      "name": "Pricing Page",
+      "url": "https://pricing.page",
+      "best_for": "Pricing tables and plan comparison",
+      "tags": [
+        "pricing",
+        "saas"
+      ]
+    },
+    {
+      "id": "saas-interface",
+      "category": "saas-ui",
+      "name": "SaaS Interface",
+      "url": "https://www.saasinterface.com",
+      "best_for": "SaaS interface patterns",
+      "tags": [
+        "saas",
+        "ui"
+      ]
+    },
+    {
+      "id": "screenlane",
+      "category": "product-ui",
+      "name": "Screenlane",
+      "url": "https://screenlane.com",
+      "best_for": "Mobile UI patterns",
+      "tags": [
+        "mobile",
+        "ui"
+      ]
+    },
+    {
+      "id": "collectui",
+      "category": "ui-components",
+      "name": "Collect UI",
+      "url": "https://collectui.com",
+      "best_for": "Daily UI challenges by category",
+      "tags": [
+        "ui",
+        "components"
+      ]
+    },
+    {
+      "id": "ui-garage",
+      "category": "product-ui",
+      "name": "UI Garage",
+      "url": "https://uigarage.net",
+      "best_for": "UI kit / screen samples",
+      "tags": [
+        "ui",
+        "kits"
+      ]
+    },
+    {
+      "id": "httpster",
+      "category": "web-inspo",
+      "name": "Httpster",
+      "url": "https://httpster.net",
+      "best_for": "Indie web design picks",
+      "tags": [
+        "web",
+        "indie"
+      ]
+    },
+    {
+      "id": "minimal-gallery",
+      "category": "minimal",
+      "name": "Minimal Gallery",
+      "url": "https://minimal.gallery",
+      "best_for": "Minimal site references",
+      "tags": [
+        "minimal",
+        "editorial"
+      ]
+    },
+    {
+      "id": "whimsy",
+      "category": "illustration",
+      "name": "Whimsy",
+      "url": "https://whimsy.design",
+      "best_for": "Playful illustration in product \u2014 only if brand allows",
+      "tags": [
+        "illustration"
+      ]
+    },
+    {
+      "id": "open-peeps",
+      "category": "illustration",
+      "name": "Open Peeps",
+      "url": "https://www.openpeeps.com",
+      "best_for": "Hand-drawn people illustration library (CC0-ish check license)",
+      "tags": [
+        "illustration",
+        "characters"
+      ]
+    },
+    {
+      "id": "undraw",
+      "category": "illustration",
+      "name": "unDraw",
+      "url": "https://undraw.co",
+      "best_for": "Open illustrations \u2014 often overused; prefer custom when possible",
+      "tags": [
+        "illustration",
+        "open"
+      ]
+    },
+    {
+      "id": "heroicons",
+      "category": "icons",
+      "name": "Heroicons",
+      "url": "https://heroicons.com",
+      "best_for": "Icon set \u2014 consistent stroke system",
+      "tags": [
+        "icons"
+      ]
+    },
+    {
+      "id": "lucide",
+      "category": "icons",
+      "name": "Lucide",
+      "url": "https://lucide.dev",
+      "best_for": "Open icon set",
+      "tags": [
+        "icons",
+        "open"
+      ]
+    },
+    {
+      "id": "fonts-google",
+      "category": "type",
+      "name": "Google Fonts",
+      "url": "https://fonts.google.com",
+      "best_for": "Type pairing research (check licenses for product use)",
+      "tags": [
+        "typography",
+        "fonts"
+      ]
+    },
+    {
+      "id": "fontshare",
+      "category": "type",
+      "name": "Fontshare",
+      "url": "https://www.fontshare.com",
+      "best_for": "Quality free fonts",
+      "tags": [
+        "typography",
+        "fonts"
+      ]
+    },
+    {
+      "id": "type-scale",
+      "category": "type",
+      "name": "Typescale",
+      "url": "https://typescale.com",
+      "best_for": "Type scale exploration",
+      "tags": [
+        "typography",
+        "scale"
+      ]
+    },
+    {
+      "id": "realtime-colors",
+      "category": "color",
+      "name": "Realtime Colors",
+      "url": "https://www.realtimecolors.com",
+      "best_for": "Palette + type on a live layout",
+      "tags": [
+        "color",
+        "palette"
+      ]
+    },
+    {
+      "id": "coolors",
+      "category": "color",
+      "name": "Coolors",
+      "url": "https://coolors.co",
+      "best_for": "Palette generation",
+      "tags": [
+        "color"
+      ]
+    },
+    {
+      "id": "shapefest",
+      "category": "texture",
+      "name": "Shapefest",
+      "url": "https://www.shapefest.com",
+      "best_for": "Free 3D shapes for backgrounds \u2014 avoid AI-blob clich\u00e9 overload",
+      "tags": [
+        "3d",
+        "assets"
+      ]
+    },
+    {
+      "id": "lstore",
+      "category": "components",
+      "name": "LStore Components",
+      "url": "https://www.lstore.graphics",
+      "best_for": "Production UI blocks",
+      "tags": [
+        "components"
+      ]
+    },
+    {
+      "id": "21stdev",
+      "category": "ui-components",
+      "name": "21st.dev",
+      "url": "https://21st.dev",
+      "best_for": "Community React components",
+      "tags": [
+        "react",
+        "components"
+      ]
+    },
+    {
+      "id": "tweakcn",
+      "category": "themes",
+      "name": "tweakcn",
+      "url": "https://tweakcn.com",
+      "best_for": "shadcn/ui theme editor patterns",
+      "tags": [
+        "shadcn",
+        "theme"
+      ]
+    },
+    {
+      "id": "shadcn-examples",
+      "category": "design-systems",
+      "name": "ui.shadcn.com examples",
+      "url": "https://ui.shadcn.com/examples",
+      "best_for": "Component composition examples",
+      "tags": [
+        "shadcn",
+        "components",
+        "design-system"
+      ]
+    },
+    {
+      "id": "vercel-design",
+      "category": "design-systems",
+      "name": "Vercel Geist",
+      "url": "https://vercel.com/geist/introduction",
+      "best_for": "Geist design system docs",
+      "tags": [
+        "design-system",
+        "vercel"
+      ]
+    },
+    {
+      "id": "linear-method",
+      "category": "product-ui",
+      "name": "Linear",
+      "url": "https://linear.app",
+      "best_for": "Product marketing + app density reference",
+      "tags": [
+        "product-ui",
+        "saas",
+        "craft"
+      ]
+    },
+    {
+      "id": "stripe-docs-ui",
+      "category": "product-ui",
+      "name": "Stripe",
+      "url": "https://stripe.com",
+      "best_for": "Docs/marketing hierarchy reference",
+      "tags": [
+        "product-ui",
+        "docs",
+        "fintech"
+      ]
+    }
+  ]
+}

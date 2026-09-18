@@ -34,6 +34,10 @@ def design_systems_source() -> Path:
     return product_root() / "design-systems"
 
 
+def references_source() -> Path:
+    return product_root() / "references"
+
+
 def build_mcp_block(python_bin: str, product: Path) -> dict:
     # Zero-install: PYTHONPATH injection (works even if product dir is noexec).
     return {
@@ -75,6 +79,9 @@ def render_yaml_snippet(python_bin: str, product: Path) -> str:
         "    max_correct_rounds: 3",
         "    ship_requires_p0_clear: true",
         "    vision_gate: false",
+        "  references:",
+        "    enabled: true",
+        "    catalog: auto  # copies under ~/.hermes/design-systems/drafthouse/references",
     ]
     return "\n".join(lines) + "\n"
 
@@ -155,6 +162,10 @@ def main(argv: list[str] | None = None) -> int:
             print(f"  {note}")
         print("== design-systems ==")
         for note in copy_tree(design_systems_source(), ds_dst, force=args.force, dry_run=args.dry_run):
+            print(f"  {note}")
+        print("== references catalog ==")
+        ref_dst = ds_dst / "references"
+        for note in copy_tree(references_source(), ref_dst, force=args.force, dry_run=args.dry_run):
             print(f"  {note}")
 
     if not args.skip_config:

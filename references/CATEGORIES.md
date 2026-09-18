@@ -1,0 +1,35 @@
+# Reference categories
+
+- [`3d`](by-category/3d.md) — mesh3d
+- [`animation`](by-category/animation.md) — 60fps-design
+- [`bento`](by-category/bento.md) — bentogrids
+- [`buttons`](by-category/buttons.md) — simply-buttons
+- [`color`](by-category/color.md) — realtime-colors, coolors
+- [`components`](by-category/components.md) — lstore
+- [`ctas`](by-category/ctas.md) — cta-gallery
+- [`curated`](by-category/curated.md) — curated-design
+- [`design-systems`](by-category/design-systems.md) — shadcn-examples, vercel-design
+- [`error-pages`](by-category/error-pages.md) — 404s-design
+- [`footers`](by-category/footers.md) — footer-design
+- [`grids`](by-category/grids.md) — gridddy
+- [`heroes`](by-category/heroes.md) — supahero, hero-head
+- [`icons`](by-category/icons.md) — heroicons, lucide
+- [`illustration`](by-category/illustration.md) — whimsy, open-peeps, undraw
+- [`landing-pages`](by-category/landing-pages.md) — landing-love, lapa-ninja, land-book
+- [`latest`](by-category/latest.md) — recent-design
+- [`microinteractions`](by-category/microinteractions.md) — designspells
+- [`minimal`](by-category/minimal.md) — minimal-gallery
+- [`navbars`](by-category/navbars.md) — navbar-gallery
+- [`one-pagers`](by-category/one-pagers.md) — onepagelove-og
+- [`pricing`](by-category/pricing.md) — pricing-page
+- [`product-ui`](by-category/product-ui.md) — refero-styles, refero, mobbin, pageflows, screenlane, ui-garage, linear-method, stripe-docs-ui
+- [`rebrands`](by-category/rebrands.md) — rebrand-gallery
+- [`saas-frames`](by-category/saas-frames.md) — saasframe
+- [`saas-sites`](by-category/saas-sites.md) — saaspo
+- [`saas-ui`](by-category/saas-ui.md) — saas-interface
+- [`sections`](by-category/sections.md) — unsection
+- [`texture`](by-category/texture.md) — shapefest
+- [`themes`](by-category/themes.md) — dark-design, shiny-design, tweakcn
+- [`type`](by-category/type.md) — fonts-google, fontshare, type-scale
+- [`ui-components`](by-category/ui-components.md) — vantaui, collectui, 21stdev
+- [`web-inspo`](by-category/web-inspo.md) — webinspoo, godly, awwwards, httpster

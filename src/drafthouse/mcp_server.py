@@ -23,7 +23,9 @@ from typing import Any
 from drafthouse import __version__
 from drafthouse.critique import PREEMIT_PROMPT, parse_critique
 from drafthouse.lint import lint_file, lint_text
+from drafthouse.references import categories_index, load_catalog, search_references
 from drafthouse.tokens import DesignSystem, bind_snippet, check_artifact_tokens
+from drafthouse.vision import parse_vision, vision_prompt
 
 
 def product_root() -> Path:
@@ -123,6 +125,57 @@ TOOLS = [
         "description": "List available design-system packages",
         "inputSchema": {"type": "object", "properties": {}},
     },
+    {
+        "name": "drafthouse_references_search",
+        "description": (
+            "Search design inspiration galleries by pattern (navbar, hero, pricing…). "
+            "Use structure only — re-skin via design system."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string"},
+                "category": {"type": "string"},
+                "tag": {"type": "string"},
+                "limit": {"type": "integer"},
+            },
+        },
+    },
+    {
+        "name": "drafthouse_references_list",
+        "description": "List reference categories and catalog size",
+        "inputSchema": {"type": "object", "properties": {}},
+    },
+    {
+        "name": "drafthouse_reference_get",
+        "description": "Fetch one design reference entry by id",
+        "inputSchema": {
+            "type": "object",
+            "properties": {"id": {"type": "string"}},
+            "required": ["id"],
+        },
+    },
+    {
+        "name": "drafthouse_vision_rubric",
+        "description": "L4 vision-gate rubric prompt for screenshot scoring",
+        "inputSchema": {
+            "type": "object",
+            "properties": {"artifact_hint": {"type": "string"}},
+        },
+    },
+    {
+        "name": "drafthouse_vision_parse",
+        "description": "Parse ```drafthouse-vision scores and evaluate ship gate (composite>=8, no MUST_FIX)",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "text": {"type": "string"},
+                "screenshot_path": {"type": "string"},
+                "round": {"type": "integer"},
+            },
+            "required": ["text"],
+        },
+    },
 ]
 
 
@@ -200,6 +253,47 @@ def call_tool(name: str, args: dict[str, Any]) -> dict[str, Any]:
 
     if name == "drafthouse_systems_list":
         return {"content": [{"type": "text", "text": json.dumps(list_systems(), indent=2)}]}
+
+    if name == "drafthouse_references_search":
+        hits = search_references(
+            query=str(args.get("query") or ""),
+            category=args.get("category") or None,
+            tag=args.get("tag") or None,
+            limit=int(args.get("limit") or 12),
+        )
+        return {"content": [{"type": "text", "text": json.dumps(hits, indent=2)}]}
+
+    if name == "drafthouse_references_list":
+        payload = {
+            "count": len(load_catalog()),
+            "categories": categories_index(),
+        }
+        return {"content": [{"type": "text", "text": json.dumps(payload, indent=2)}]}
+
+    if name == "drafthouse_reference_get":
+        ref_id = str(args.get("id") or "")
+        for item in load_catalog():
+            if item.get("id") == ref_id:
+                return {"content": [{"type": "text", "text": json.dumps(item, indent=2)}]}
+        return {
+            "content": [{"type": "text", "text": json.dumps({"error": "not found", "id": ref_id})}],
+            "isError": True,
+        }
+
+    if name == "drafthouse_vision_rubric":
+        return {
+            "content": [
+                {"type": "text", "text": vision_prompt(str(args.get("artifact_hint") or ""))}
+            ]
+        }
+
+    if name == "drafthouse_vision_parse":
+        report = parse_vision(
+            str(args.get("text") or ""),
+            screenshot_path=args.get("screenshot_path"),
+            round_no=int(args.get("round") or 1),
+        )
+        return {"content": [{"type": "text", "text": json.dumps(report.to_dict(), indent=2)}]}
 
     return {
         "content": [{"type": "text", "text": f"Unknown tool: {name}"}],

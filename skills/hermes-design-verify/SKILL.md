@@ -1,12 +1,12 @@
 ---
 name: hermes-design-verify
 description: Always-on design quality gate — lint, 5-dim self-check, token bind before you show work
-version: 0.1.0
+version: 0.2.0
 author: Drafthouse
 license: MIT
 metadata:
   hermes:
-    pairs_with: [claude-design, design-md, popular-web-designs]
+    pairs_with: [claude-design, design-md, popular-web-designs, hermes-design-references, hermes-design-vision]
 ---
 
 # Hermes design verify
@@ -16,19 +16,33 @@ one-pager, email, mockup). Claude Design-grade quality means **check and correct
 before the human treats it as done**.
 
 Process taste and layout live in `creative/claude-design`. Brand systems live in
-`creative/popular-web-designs` / `creative/design-md`. **This skill owns the gate.**
+`creative/popular-web-designs` / `creative/design-md`. Pattern galleries live in
+`hermes-design-references`. **This skill owns the gate.**
 
 ## Binding order
 
 1. If `~/.hermes/design-systems/drafthouse/<name>/` or project `design-systems/` has a package, bind `tokens.css` + `DESIGN.md` first.
-2. Else use `drafthouse bind --system default` via MCP tool `drafthouse_bind`.
+2. Else use MCP `drafthouse_bind` / `drafthouse bind --system default`.
 3. Else pick a coherent direction yourself and declare it in a `:root` comment.
 
 ## Mandatory loop (do not skip)
 
 ```
-Plan → Write file → L1 checklist → L2 5-dim → L3 lint → fix → re-check → THEN show human
+Lookup refs (if pattern UI) → Plan → Write file → L1 checklist → L2 5-dim
+→ L3 lint → fix → re-check → (optional L4 vision) → THEN show human
 ```
+
+### L3.5 — Pattern references (before generate)
+
+For nav / heroes / sections / pricing / dashboards / footers / CTAs, look up structure first:
+
+```
+MCP: drafthouse_references_search  query=hero|navbar|footer|cta|pricing|bento
+CLI: bash bin/drafthouse refs search hero
+```
+
+Catalog: `references/catalog.json` + `references/by-category/*.md`.
+Steal **structure**, not pixels. Re-skin via tokens.
 
 ### L1 — P0 checklist
 
@@ -61,7 +75,7 @@ MUST_FIX: none
 ### L3 — Deterministic lint
 
 ```bash
-drafthouse lint path/to/artifact.html --system default
+bash bin/drafthouse lint path/to/artifact.html --system design-systems/default
 # or MCP tool: drafthouse_lint
 ```
 
@@ -70,8 +84,14 @@ Token off-palette colors also fail the gate when a design system is active.
 
 ### L4 — Optional vision (config `vision_gate: true`)
 
-Only if enabled: `desktop_preview` + `vision_analyze` with the same 5 dims.
-Max 3 correct rounds, then surface honestly to the human.
+Use skill **`hermes-design-vision`** when enabled or when the human asks for visual QA:
+
+1. `desktop_preview` the artifact  
+2. `vision_analyze` screenshot with MCP `drafthouse_vision_rubric`  
+3. MCP `drafthouse_vision_parse` → ship if composite ≥ 8.0 and no MUST_FIX  
+4. Max **3** correct rounds, then surface honestly  
+
+Lint P0 still wins over a pretty screenshot.
 
 ## Anti-slop (must fix when lint flags)
 
@@ -88,22 +108,27 @@ When you lack a real value, use an honest stub (`—`, grey block, labelled plac
 
 Default: show the human **verified** work, with a one-line gate summary:
 
-> Gate: P0=0 · 5-dim min=4 · tokens=pass · system=`default`
+> Gate: P0=0 · 5-dim min=4 · tokens=pass · system=`default` · refs=hero,navbar
 
-If they ask to see work mid-loop, label it **unverified** until L1–L3 pass.
+With vision on, append: `Vision SHIP · composite=8.4 · MUST_FIX=0 · round=2`
+
+If they ask to see work mid-loop, label it **unverified** until gates pass.
 
 ## Commands
 
 | Intent | Call |
 |--------|------|
-| Bind system | MCP `drafthouse_bind` or `drafthouse bind --system default` |
-| Lint file | MCP `drafthouse_lint` / `drafthouse lint <file>` |
+| Bind system | MCP `drafthouse_bind` |
+| Lint file | MCP `drafthouse_lint` / `bash bin/drafthouse lint <file>` |
 | Tokens | MCP `drafthouse_tokens_check` |
 | Pre-emit prompt | MCP `drafthouse_selfcheck` |
 | Parse scores | MCP `drafthouse_critique_parse` |
+| Pattern refs | MCP `drafthouse_references_search` |
+| Vision rubric/parse | MCP `drafthouse_vision_rubric` / `drafthouse_vision_parse` |
 
 ## Out of scope
 
 - Rewriting Hermes core tools
 - Figma pixel-perfect replication (best-effort on-brand only)
 - Shipping public links (local/private by default)
+- Cloning gallery layouts without token re-skin
