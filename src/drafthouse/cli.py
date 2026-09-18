@@ -151,6 +151,20 @@ def build_parser() -> argparse.ArgumentParser:
     p_doc.add_argument("--json", action="store_true")
     p_doc.set_defaults(func=cmd_doctor)
 
+    def cmd_extract(args: argparse.Namespace) -> int:
+        from drafthouse.extract_system import main as extract_main
+
+        argv = [args.input, "--out", args.out]
+        if args.name:
+            argv += ["--name", args.name]
+        return extract_main(argv)
+
+    p_ex = sub.add_parser("extract-system", help="Draft design-system package from CSS/HTML")
+    p_ex.add_argument("input")
+    p_ex.add_argument("--out", required=True)
+    p_ex.add_argument("--name")
+    p_ex.set_defaults(func=cmd_extract)
+
     from drafthouse.refs_cli import build_refs_parser, build_vision_parser
 
     build_refs_parser(sub)

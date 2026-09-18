@@ -82,3 +82,8 @@ bash bin/drafthouse refs list
 ## License note
 
 Galleries are inspiration indexes. Component libraries and fonts have their own licenses — check before shipping.
+
+
+## Playbooks
+
+Read `references/playbooks/*.md` (hero, navbar, pricing, …) for IA before generate.

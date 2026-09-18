@@ -1,0 +1,13 @@
+:root {
+  --sm-ink: #111827;
+  --sm-ink-2: #4b5563;
+  --sm-page: #fafafa;
+  --sm-card: #ffffff;
+  --sm-border: #e5e7eb;
+  --sm-accent: #0f766e;
+  --sm-accent-fg: #ecfdf5;
+  --sm-muted: #6b7280;
+  --sm-font-display: "Segoe UI", system-ui, sans-serif;
+  --sm-font-body: "Segoe UI", system-ui, sans-serif;
+  --sm-radius: 0.375rem;
+}

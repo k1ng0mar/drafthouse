@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Status · Research plate</title>
+    <style>
+      :root {
+        --dt-ink: #12160f;
+        --dt-ink-2: #1e241d;
+        --dt-paper: #ecebe2;
+        --dt-paper-2: #f6f3e8;
+        --dt-rule: #c5c9b8;
+        --dt-haze: #5b6257;
+        --dt-moss: #5f8640;
+        --dt-font-display: Georgia, "Times New Roman", serif;
+        --dt-font-body: system-ui, sans-serif;
+      }
+      body {
+        margin: 0;
+        font-family: var(--dt-font-body);
+        background: var(--dt-paper);
+        color: var(--dt-ink-2);
+        padding: 2rem 1.5rem;
+      }
+      h1 {
+        font-family: var(--dt-font-display);
+        color: var(--dt-ink);
+        margin: 0 0 0.75rem;
+      }
+      table { border-collapse: collapse; max-width: 28rem; width: 100%; }
+      th, td {
+        border: 1px solid var(--dt-rule);
+        padding: 0.55rem 0.75rem;
+        text-align: left;
+        background: var(--dt-paper-2);
+      }
+      th { font-weight: 600; color: var(--dt-ink); }
+      .stub { color: var(--dt-haze); }
+    </style>
+  </head>
+  <body>
+    <h1>Research plate status</h1>
+    <p>Fields without measurements stay honestly empty.</p>
+    <table>
+      <tr><th>Metric</th><th>Value</th></tr>
+      <tr><td>Gate coverage</td><td class="stub">—</td></tr>
+      <tr><td>Median latency</td><td class="stub">—</td></tr>
+      <tr><td>Active workspaces</td><td class="stub">—</td></tr>
+      <tr><td>Lint policy</td><td>P0 fail-closed</td></tr>
+    </table>
+  </body>
+</html>

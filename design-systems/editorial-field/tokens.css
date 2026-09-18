@@ -1,0 +1,14 @@
+:root {
+  --ed-ink: #1c1917;
+  --ed-ink-2: #44403c;
+  --ed-paper: #f5f0e8;
+  --ed-paper-2: #fffdf8;
+  --ed-rust: #c2410c;
+  --ed-moss: #3f6212;
+  --ed-haze: #78716c;
+  --ed-rule: #d6d3d1;
+  --ed-font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --ed-font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --ed-font-mono: "DM Mono", Consolas, monospace;
+  --ed-radius: 0.2rem;
+}
