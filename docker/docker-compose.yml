@@ -5,7 +5,7 @@ services:
       dockerfile: docker/Dockerfile
     image: drafthouse-lab:latest
     environment:
-      HERMES_HOME: /home/lab/.hermes
+      HERMES_HOME: /opt/drafthouse/.hermes-sandbox
       DRAFTHOUSE_ROOT: /opt/drafthouse
       PYTHONPATH: /opt/drafthouse/src
       DRAFTHOUSE_BENCH_STRICT: "1"
@@ -24,7 +24,7 @@ services:
   drafthouse-shell:
     image: drafthouse-lab:latest
     environment:
-      HERMES_HOME: /home/lab/.hermes
+      HERMES_HOME: /opt/drafthouse/.hermes-sandbox
       DRAFTHOUSE_ROOT: /opt/drafthouse
       PYTHONPATH: /opt/drafthouse/src
     volumes:
