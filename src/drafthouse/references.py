@@ -169,21 +169,33 @@ def catalog_dir() -> Path:
     return Path(__file__).resolve().parents[2] / "references"
 
 
+_CATALOG_CACHE: list[dict[str, Any]] | None = None
+
+
 def load_catalog() -> list[dict[str, Any]]:
+    """Load catalog.json with in-process cache (refs search is hot-path)."""
+    global _CATALOG_CACHE
+    if _CATALOG_CACHE is not None:
+        return _CATALOG_CACHE
     path = catalog_dir() / "catalog.json"
+    items: list[dict[str, Any]] = []
     if path.exists():
         try:
             data = json.loads(path.read_text(encoding="utf-8"))
             if isinstance(data, dict) and "references" in data:
-                return list(data["references"])
-            if isinstance(data, list):
-                return data
+                items = list(data["references"])
+            elif isinstance(data, list):
+                items = data
         except json.JSONDecodeError:
-            pass
-    return [r.to_dict() for r in REFERENCES]
+            items = []
+    if not items:
+        items = [r.to_dict() for r in REFERENCES]
+    _CATALOG_CACHE = items
+    return items
 
 
 def write_catalog(path: Path | None = None) -> Path:
+    global _CATALOG_CACHE
     out = path or (catalog_dir() / "catalog.json")
     out.parent.mkdir(parents=True, exist_ok=True)
     payload = {
@@ -197,6 +209,7 @@ def write_catalog(path: Path | None = None) -> Path:
         "references": [r.to_dict() for r in REFERENCES],
     }
     out.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    _CATALOG_CACHE = None
     return out
 
 
@@ -208,25 +221,23 @@ def search_references(
 ) -> list[dict[str, Any]]:
     items = load_catalog()
     q = (query or "").strip().lower()
+    cat = (category or "").strip().lower() or None
+    tg = (tag or "").strip().lower() or None
     out: list[dict[str, Any]] = []
     for item in items:
-        if category and item.get("category") != category:
+        if cat and str(item.get("category", "")).lower() != cat:
             continue
-        if tag:
-            tags = [str(t).lower() for t in item.get("tags") or []]
-            if tag.lower() not in tags:
+        if tg:
+            tags = item.get("tags") or []
+            if not any(str(t).lower() == tg for t in tags):
                 continue
         if q:
-            blob = " ".join(
-                [
-                    str(item.get("id", "")),
-                    str(item.get("name", "")),
-                    str(item.get("category", "")),
-                    str(item.get("best_for", "")),
-                    " ".join(item.get("tags") or []),
-                ]
-            ).lower()
-            if q not in blob:
+            id_s = str(item.get("id", "")).lower()
+            name = str(item.get("name", "")).lower()
+            cat_s = str(item.get("category", "")).lower()
+            best = str(item.get("best_for", "")).lower()
+            tags_s = " ".join(str(t).lower() for t in item.get("tags") or [])
+            if q not in id_s and q not in name and q not in cat_s and q not in best and q not in tags_s:
                 continue
         out.append(item)
         if len(out) >= limit:

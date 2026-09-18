@@ -6,3 +6,6 @@ dist/
 .pytest_cache/
 .venv/
 *.pyc
+.hermes-sandbox/
+.hermes-ci-sandbox/
+.hermes-ci-sandbox-doctor/

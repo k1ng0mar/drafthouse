@@ -1,0 +1,38 @@
+services:
+  drafthouse-lab:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: drafthouse-lab:latest
+    environment:
+      HERMES_HOME: /home/lab/.hermes
+      DRAFTHOUSE_ROOT: /opt/drafthouse
+      PYTHONPATH: /opt/drafthouse/src
+      DRAFTHOUSE_BENCH_STRICT: "1"
+    volumes:
+      - drafthouse-hermes-sandbox:/home/lab/.hermes
+    working_dir: /opt/drafthouse
+    stdin_open: true
+    tty: true
+    command:
+      [
+        "bash",
+        "-lc",
+        "scripts/sandbox_hermes.sh init && python3 -m drafthouse.doctor && bash scripts/ci.sh && echo LAB_OK",
+      ]
+
+  drafthouse-shell:
+    image: drafthouse-lab:latest
+    environment:
+      HERMES_HOME: /home/lab/.hermes
+      DRAFTHOUSE_ROOT: /opt/drafthouse
+      PYTHONPATH: /opt/drafthouse/src
+    volumes:
+      - drafthouse-hermes-sandbox:/home/lab/.hermes
+    working_dir: /opt/drafthouse
+    stdin_open: true
+    tty: true
+    command: ["bash"]
+
+volumes:
+  drafthouse-hermes-sandbox:

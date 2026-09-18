@@ -141,6 +141,16 @@ def build_parser() -> argparse.ArgumentParser:
     p_sc = sub.add_parser("selfcheck", help="Print L2 5-dim pre-emit prompt")
     p_sc.set_defaults(func=cmd_selfcheck)
 
+    def cmd_doctor(args: argparse.Namespace) -> int:
+        from drafthouse.doctor import main as doctor_main
+
+        argv = ["--json"] if getattr(args, "json", False) else []
+        return doctor_main(argv)
+
+    p_doc = sub.add_parser("doctor", help="Environment / install health checks")
+    p_doc.add_argument("--json", action="store_true")
+    p_doc.set_defaults(func=cmd_doctor)
+
     from drafthouse.refs_cli import build_refs_parser, build_vision_parser
 
     build_refs_parser(sub)

@@ -21,11 +21,6 @@ from pathlib import Path
 from typing import Any
 
 from drafthouse import __version__
-from drafthouse.critique import PREEMIT_PROMPT, parse_critique
-from drafthouse.lint import lint_file, lint_text
-from drafthouse.references import categories_index, load_catalog, search_references
-from drafthouse.tokens import DesignSystem, bind_snippet, check_artifact_tokens
-from drafthouse.vision import parse_vision, vision_prompt
 
 
 def product_root() -> Path:
@@ -33,6 +28,39 @@ def product_root() -> Path:
     if env:
         return Path(env).expanduser()
     return Path(__file__).resolve().parents[2]
+
+
+# Lazy imports — keep MCP initialize cold-start cheap (perf target ≤400ms process)
+
+
+def _lint():
+    from drafthouse.lint import lint_file, lint_text
+
+    return lint_file, lint_text
+
+
+def _tokens():
+    from drafthouse.tokens import DesignSystem, bind_snippet, check_artifact_tokens
+
+    return DesignSystem, bind_snippet, check_artifact_tokens
+
+
+def _refs():
+    from drafthouse.references import categories_index, load_catalog, search_references
+
+    return categories_index, load_catalog, search_references
+
+
+def _critique():
+    from drafthouse.critique import PREEMIT_PROMPT, parse_critique
+
+    return PREEMIT_PROMPT, parse_critique
+
+
+def _vision():
+    from drafthouse.vision import parse_vision, vision_prompt
+
+    return parse_vision, vision_prompt
 
 
 def systems_dir() -> Path:
@@ -188,6 +216,7 @@ def _read_artifact(args: dict[str, Any]) -> tuple[str, str]:
 
 def call_tool(name: str, args: dict[str, Any]) -> dict[str, Any]:
     if name == "drafthouse_lint":
+        lint_file, lint_text = _lint()
         if args.get("path"):
             result = lint_file(args["path"])
         else:
@@ -198,6 +227,7 @@ def call_tool(name: str, args: dict[str, Any]) -> dict[str, Any]:
         if sys_ref:
             root = resolve_system(str(sys_ref))
             if root:
+                DesignSystem, _, check_artifact_tokens = _tokens()
                 system = DesignSystem.load(root)
                 text, _ = _read_artifact(args) if not args.get("path") else (
                     Path(args["path"]).read_text(encoding="utf-8", errors="replace"),
@@ -210,6 +240,7 @@ def call_tool(name: str, args: dict[str, Any]) -> dict[str, Any]:
         return {"content": [{"type": "text", "text": json.dumps(payload, indent=2)}]}
 
     if name == "drafthouse_tokens_check":
+        DesignSystem, _, check_artifact_tokens = _tokens()
         root = resolve_system(str(args.get("system") or "default"))
         if not root:
             return {
@@ -236,6 +267,7 @@ def call_tool(name: str, args: dict[str, Any]) -> dict[str, Any]:
         }
 
     if name == "drafthouse_bind":
+        DesignSystem, bind_snippet, _ = _tokens()
         root = resolve_system(str(args.get("system") or "default"))
         if not root:
             return {
@@ -245,9 +277,11 @@ def call_tool(name: str, args: dict[str, Any]) -> dict[str, Any]:
         return {"content": [{"type": "text", "text": bind_snippet(DesignSystem.load(root))}]}
 
     if name == "drafthouse_selfcheck":
+        PREEMIT_PROMPT, _ = _critique()
         return {"content": [{"type": "text", "text": PREEMIT_PROMPT}]}
 
     if name == "drafthouse_critique_parse":
+        _, parse_critique = _critique()
         scores = parse_critique(str(args.get("text") or ""))
         return {"content": [{"type": "text", "text": json.dumps(scores.to_dict(), indent=2)}]}
 
@@ -255,6 +289,7 @@ def call_tool(name: str, args: dict[str, Any]) -> dict[str, Any]:
         return {"content": [{"type": "text", "text": json.dumps(list_systems(), indent=2)}]}
 
     if name == "drafthouse_references_search":
+        _, _, search_references = _refs()
         hits = search_references(
             query=str(args.get("query") or ""),
             category=args.get("category") or None,
@@ -264,6 +299,7 @@ def call_tool(name: str, args: dict[str, Any]) -> dict[str, Any]:
         return {"content": [{"type": "text", "text": json.dumps(hits, indent=2)}]}
 
     if name == "drafthouse_references_list":
+        categories_index, load_catalog, _ = _refs()
         payload = {
             "count": len(load_catalog()),
             "categories": categories_index(),
@@ -271,6 +307,7 @@ def call_tool(name: str, args: dict[str, Any]) -> dict[str, Any]:
         return {"content": [{"type": "text", "text": json.dumps(payload, indent=2)}]}
 
     if name == "drafthouse_reference_get":
+        _, load_catalog, _ = _refs()
         ref_id = str(args.get("id") or "")
         for item in load_catalog():
             if item.get("id") == ref_id:
@@ -281,6 +318,7 @@ def call_tool(name: str, args: dict[str, Any]) -> dict[str, Any]:
         }
 
     if name == "drafthouse_vision_rubric":
+        _, vision_prompt = _vision()
         return {
             "content": [
                 {"type": "text", "text": vision_prompt(str(args.get("artifact_hint") or ""))}
@@ -288,6 +326,7 @@ def call_tool(name: str, args: dict[str, Any]) -> dict[str, Any]:
         }
 
     if name == "drafthouse_vision_parse":
+        parse_vision, _ = _vision()
         report = parse_vision(
             str(args.get("text") or ""),
             screenshot_path=args.get("screenshot_path"),

@@ -1,0 +1,9 @@
+# Keep lab image lean
+.git
+.hermes-sandbox
+.hermes-ci-sandbox
+.hermes-ci-sandbox-doctor
+__pycache__
+*.pyc
+.pytest_cache
+*.egg-info

@@ -9,7 +9,7 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from drafthouse.types import LintIssue, LintResult
+from drafthouse.models import LintIssue, LintResult
 
 # (rule_id, severity, pattern, message)
 _RULES: list[tuple[str, str, re.Pattern[str], str]] = [
