@@ -1,0 +1,32 @@
+/* Drafthouse Field — default tokens */
+:root {
+  /* A1 identity */
+  --dt-ink: #12160f;
+  --dt-ink-2: #1e241d;
+  --dt-paper: #ecebe2;
+  --dt-paper-2: #f6f3e8;
+  --dt-rust: #e65b35;
+  --dt-moss: #5f8640;
+  --dt-olive: #c4df6b;
+  --dt-haze: #5b6257;
+  --dt-rule: #c5c9b8;
+
+  /* A2 type */
+  --dt-font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --dt-font-body: "IBM Plex Sans", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --dt-font-mono: "DM Mono", "SF Mono", Consolas, monospace;
+
+  /* B space */
+  --dt-space-1: 0.25rem;
+  --dt-space-2: 0.5rem;
+  --dt-space-3: 0.75rem;
+  --dt-space-4: 1rem;
+  --dt-space-6: 1.5rem;
+  --dt-space-8: 2rem;
+  --dt-space-12: 3rem;
+
+  /* C surfaces */
+  --dt-radius: 0.25rem;
+  --dt-border: 1px solid var(--dt-rule);
+  --dt-shadow-plate: 0 18px 40px rgba(18, 22, 15, 0.06);
+}

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Zero-install CLI — no pip required.
+set -euo pipefail
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+export PYTHONPATH="${ROOT}/src${PYTHONPATH:+:$PYTHONPATH}"
+export DRAFTHOUSE_ROOT="${DRAFTHOUSE_ROOT:-$ROOT}"
+exec python3 -m drafthouse.cli "$@"
