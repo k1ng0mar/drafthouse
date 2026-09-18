@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Pricing · Hermes Desk</title>
+    <style>
+      :root {
+        --dt-ink: #12160f;
+        --dt-ink-2: #1e241d;
+        --dt-paper: #ecebe2;
+        --dt-paper-2: #f6f3e8;
+        --dt-rust: #e65b35;
+        --dt-moss: #5f8640;
+        --dt-rule: #c5c9b8;
+        --dt-font-display: Georgia, "Times New Roman", serif;
+        --dt-font-body: system-ui, sans-serif;
+      }
+      body { margin: 0; font-family: var(--dt-font-body); background: var(--dt-paper); color: var(--dt-ink-2); }
+      nav {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--dt-rule);
+        background: var(--dt-paper-2);
+        display: flex;
+        justify-content: space-between;
+      }
+      nav a { color: var(--dt-rust); text-decoration: none; font-weight: 600; }
+      header { padding: 2.5rem 1.5rem 1rem; max-width: 40rem; }
+      h1 {
+        font-family: var(--dt-font-display);
+        color: var(--dt-ink);
+        letter-spacing: -0.04em;
+        margin: 0 0 0.5rem;
+      }
+      .grid {
+        display: grid;
+        gap: 1rem;
+        padding: 1rem 1.5rem 3rem;
+        max-width: 64rem;
+      }
+      @media (min-width: 800px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+      .plan {
+        background: var(--dt-paper-2);
+        border: 1px solid var(--dt-rule);
+        padding: 1.25rem;
+      }
+      .plan h2 {
+        font-family: var(--dt-font-display);
+        margin: 0 0 0.35rem;
+        color: var(--dt-ink);
+      }
+      .price { color: var(--dt-moss); font-weight: 700; margin-bottom: 0.75rem; }
+      ul { padding-left: 1.1rem; margin: 0 0 1rem; line-height: 1.55; }
+      a.cta { color: var(--dt-rust); font-weight: 600; }
+      a:focus-visible { outline: 2px solid #c4df6b; outline-offset: 2px; }
+    </style>
+  </head>
+  <body>
+    <nav aria-label="Primary">
+      <span>Hermes Desk</span>
+      <a href="/contact">Talk to us</a>
+    </nav>
+    <header>
+      <h1>Pricing</h1>
+      <p>Choose a lab tier. Usage details are confirmed with your team before anything ships.</p>
+    </header>
+    <section class="grid" aria-label="Plans">
+      <article class="plan">
+        <h2>Field</h2>
+        <p class="price">$0 · local sandbox</p>
+        <ul>
+          <li>Drafthouse lint + tokens</li>
+          <li>Reference catalog</li>
+          <li>Docker lab CI</li>
+        </ul>
+        <a class="cta" href="/docs">Read the handbook</a>
+      </article>
+      <article class="plan">
+        <h2>Desk</h2>
+        <p class="price">Team pricing on request</p>
+        <ul>
+          <li>Hermes skill install</li>
+          <li>MCP verify tools</li>
+          <li>Shared design systems</li>
+        </ul>
+        <a class="cta" href="/contact">Talk to us</a>
+      </article>
+      <article class="plan">
+        <h2>Org</h2>
+        <p class="price">Custom</p>
+        <ul>
+          <li>Locked org design system</li>
+          <li>Gate logs &amp; eval pack</li>
+          <li>Onboarding workshop</li>
+        </ul>
+        <a class="cta" href="/contact">Talk to us</a>
+      </article>
+    </section>
+  </body>
+</html>

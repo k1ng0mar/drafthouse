@@ -31,6 +31,20 @@ MCP helpers:
 - `drafthouse_vision_parse` — parse model output → gate JSON
 - `drafthouse_references_search` — if craft issues are structural, look up the pattern
 
+## Drafthouse runner (recommended)
+
+```bash
+bash bin/drafthouse vision gate plan path/to/artifact.html
+bash bin/drafthouse vision gate parse --artifact path/to/artifact.html \
+  --screenshot path/to/shot.png --text-file path/to/vision-output.txt
+bash bin/drafthouse vision gate rounds path/to/artifact.html
+```
+
+Exit codes: `0` ship · `1` fix · `2` max rounds exceeded.
+Logs: `DRAFTHOUSE_GATE_DIR` or `~/.drafthouse/gates/*.jsonl`.
+
+MCP: `drafthouse_vision_rubric` / `drafthouse_vision_parse`.
+
 ## Rubric (send to vision_analyze)
 
 ```

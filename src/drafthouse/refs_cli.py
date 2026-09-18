@@ -151,3 +151,15 @@ def build_vision_parser(sub: argparse._SubParsersAction) -> None:
         p_d.add_argument(f"--{name}", type=int, default=default)
     p_d.add_argument("--no-fix", action="store_true")
     p_d.set_defaults(func=cmd_vision_demo)
+
+    def cmd_vision_gate(args: argparse.Namespace) -> int:
+        from drafthouse.vision_gate import main as gate_main
+
+        rest = list(getattr(args, "gate_args", None) or [])
+        if rest and rest[0] == "--":
+            rest = rest[1:]
+        return gate_main(rest)
+
+    p_g = v_sub.add_parser("gate", help="L4 runner: plan | parse | rounds | demo | rubric")
+    p_g.add_argument("gate_args", nargs=argparse.REMAINDER)
+    p_g.set_defaults(func=cmd_vision_gate)

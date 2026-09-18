@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Hermes Desk — design verify for Hermes Agent</title>
+    <style>
+      :root {
+        --dt-ink: #12160f;
+        --dt-ink-2: #1e241d;
+        --dt-paper: #ecebe2;
+        --dt-paper-2: #f6f3e8;
+        --dt-rust: #e65b35;
+        --dt-moss: #5f8640;
+        --dt-olive: #c4df6b;
+        --dt-rule: #c5c9b8;
+        --dt-font-display: Georgia, "Times New Roman", serif;
+        --dt-font-body: system-ui, sans-serif;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: var(--dt-font-body);
+        background: var(--dt-paper);
+        color: var(--dt-ink-2);
+      }
+      a:focus-visible { outline: 2px solid var(--dt-olive); outline-offset: 2px; }
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--dt-rule);
+        background: var(--dt-ink);
+        color: var(--dt-paper-2);
+      }
+      .nav a { color: var(--dt-paper-2); text-decoration: none; margin-left: 1rem; }
+      .hero {
+        padding: 4rem 1.5rem 3rem;
+        max-width: 40rem;
+      }
+      .hero h1 {
+        font-family: var(--dt-font-display);
+        font-size: 2.75rem;
+        letter-spacing: -0.04em;
+        color: var(--dt-ink);
+        margin: 0 0 1rem;
+        line-height: 1.1;
+      }
+      .hero p { line-height: 1.65; color: var(--dt-ink-2); }
+      .cta {
+        display: inline-block;
+        margin-top: 1.25rem;
+        background: var(--dt-rust);
+        color: #fff5e9;
+        text-decoration: none;
+        padding: 0.75rem 1.1rem;
+        font-weight: 600;
+        border-radius: 2px;
+      }
+      .cta:hover { filter: brightness(1.05); }
+      .points {
+        display: grid;
+        gap: 1rem;
+        padding: 0 1.5rem 3rem;
+        max-width: 56rem;
+      }
+      @media (min-width: 720px) {
+        .points { grid-template-columns: repeat(3, 1fr); }
+      }
+      .plate {
+        background: var(--dt-paper-2);
+        border: 1px solid var(--dt-rule);
+        padding: 1.25rem;
+      }
+      .plate h2 {
+        font-family: var(--dt-font-display);
+        font-size: 1.15rem;
+        margin: 0 0 0.5rem;
+        color: var(--dt-ink);
+      }
+      footer {
+        border-top: 1px solid var(--dt-rule);
+        padding: 1.25rem 1.5rem;
+        font-size: 0.9rem;
+        color: var(--dt-ink-2);
+        background: var(--dt-paper-2);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="nav" aria-label="Primary">
+      <strong>Hermes Desk</strong>
+      <div>
+        <a href="#gates">Gates</a>
+        <a href="#refs">References</a>
+        <a class="cta" href="#access" style="color:#fff5e9;margin-left:1rem">Request lab access</a>
+      </div>
+    </nav>
+    <header class="hero">
+      <h1>Design verify for Hermes Agent</h1>
+      <p>
+        Hermes Desk keeps visual work honest: bind your design system, look up structure,
+        lint before you show, and score screenshots when you need a second pair of eyes.
+      </p>
+      <a class="cta" id="access" href="#access">Request lab access</a>
+    </header>
+    <section class="points" id="gates">
+      <article class="plate">
+        <h2>Token bind</h2>
+        <p>Every plate starts from DESIGN.md tokens — not a random template palette.</p>
+      </article>
+      <article class="plate">
+        <h2>P0 lint</h2>
+        <p>Anti-slop rules fail closed: no invented metrics, no emoji-as-icons, no default AI indigo.</p>
+      </article>
+      <article class="plate" id="refs">
+        <h2>Structure refs</h2>
+        <p>Hero, nav, pricing, footer playbooks — study hierarchy, then re-skin in brand tokens.</p>
+      </article>
+    </section>
+    <footer>
+      <p>Hermes Desk · Drafthouse Field system · local-first verify loop</p>
+    </footer>
+  </body>
+</html>
