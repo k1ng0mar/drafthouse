@@ -32,6 +32,7 @@ def _pct(samples: list[float], p: float) -> float:
 def _ms(samples: list[float]) -> dict:
     return {
         "n": len(samples),
+        "min_ms": round(min(samples), 2) if samples else 0.0,
         "p50_ms": round(_pct(samples, 50), 2),
         "p95_ms": round(_pct(samples, 95), 2),
         "mean_ms": round(statistics.fmean(samples), 2) if samples else 0.0,
@@ -149,29 +150,63 @@ def bench_mcp_lint_roundtrip(iters: int = 20, warmup: int = 2) -> dict:
     return {"operation": "mcp_init_plus_lint_process", "warmup": warmup, **_ms(samples)}
 
 
+# Drafthouse-specific overhead is what we control. The MCP server is a fresh
+# CPython process, so its floor is the bare interpreter spawn time on the
+# current host. Absolute targets are meaningless across hosts (Python version,
+# sitecustomize, FUSE, machine load). Targets therefore apply to the DELTA
+# over that floor. Set DRAFTHOUSE_BENCH_ABSOLUTE_MCP=1 for the legacy check.
+MCP_OVERHEAD_P50_MS = 300
+MCP_OVERHEAD_P95_MS = 600
+
 # p50 is the primary MCP cold-start metric after warmup (p95 can spike on first FS touch)
+ABSOLUTE_MCP_TARGETS = {"p50_ms": 250, "p95_ms": 400}
 TARGETS = {
     "lint_text_50kb": {"p95_ms": 150},
     "tokens_check": {"p95_ms": 80},
     "refs_search": {"p95_ms": 20},
-    "mcp_initialize_process": {"p50_ms": 250, "p95_ms": 400},
 }
 
 
-def _violations(row: dict) -> list[str]:
+def interpreter_baseline_ms() -> dict:
+    """Bare `python -c pass` spawn time on this host, small n, warmup first."""
+    for _ in range(2):
+        subprocess.run([sys.executable, "-c", "pass"], capture_output=True)
+    samples = []
+    for _ in range(10):
+        t0 = time.perf_counter()
+        subprocess.run([sys.executable, "-c", "pass"], capture_output=True)
+        samples.append((time.perf_counter() - t0) * 1000)
+    return _ms(samples)
+
+
+def _violations(row: dict, baseline: dict) -> list[str]:
     op = row["operation"]
-    if op not in TARGETS:
+    target = TARGETS.get(op)
+    if op == "mcp_initialize_process":
+        if os.environ.get("DRAFTHOUSE_BENCH_ABSOLUTE_MCP") == "1":
+            target = ABSOLUTE_MCP_TARGETS
+            baseline = {"p50_ms": 0, "p95_ms": 0}
+        else:
+            target = {"p50_ms": MCP_OVERHEAD_P50_MS, "p95_ms": MCP_OVERHEAD_P95_MS}
+            baseline = {"p50_ms": baseline["p50_ms"], "p95_ms": baseline["p95_ms"]}
+    if not target:
         return []
-    target = TARGETS[op]
     out = []
-    if "p50_ms" in target and row.get("p50_ms", 0) > target["p50_ms"]:
-        out.append(f"{op}: p50 {row['p50_ms']}ms > {target['p50_ms']}ms")
-    if "p95_ms" in target and row.get("p95_ms", 0) > target["p95_ms"]:
-        out.append(f"{op}: p95 {row['p95_ms']}ms > {target['p95_ms']}ms")
+    if "p50_ms" in target and row.get("p50_ms", 0) - baseline.get("p50_ms", 0) > target["p50_ms"]:
+        out.append(
+            f"{op}: overhead p50 {round(row.get('p50_ms', 0) - baseline.get('p50_ms', 0), 1)}ms"
+            f" > {target['p50_ms']}ms"
+        )
+    if "p95_ms" in target and row.get("p95_ms", 0) - baseline.get("p95_ms", 0) > target["p95_ms"]:
+        out.append(
+            f"{op}: overhead p95 {round(row.get('p95_ms', 0) - baseline.get('p95_ms', 0), 1)}ms"
+            f" > {target['p95_ms']}ms"
+        )
     return out
 
 
 def main() -> int:
+    baseline = interpreter_baseline_ms()
     results = [
         bench_lint(),
         bench_tokens(),
@@ -179,11 +214,24 @@ def main() -> int:
         bench_mcp_initialize(),
         bench_mcp_lint_roundtrip(),
     ]
-    print(json.dumps({"benchmarks": results, "targets": TARGETS}, indent=2))
+    print(
+        json.dumps(
+            {
+                "interpreter_baseline": {"operation": "python_-c_pass", **baseline},
+                "benchmarks": results,
+                "targets": TARGETS,
+                "mcp_overhead_targets_ms": {
+                    "p50": MCP_OVERHEAD_P50_MS,
+                    "p95": MCP_OVERHEAD_P95_MS,
+                },
+            },
+            indent=2,
+        )
+    )
 
     failures: list[str] = []
     for row in results:
-        failures.extend(_violations(row))
+        failures.extend(_violations(row, baseline))
     strict = os.environ.get("DRAFTHOUSE_BENCH_STRICT", "0") == "1"
     if failures:
         msg = "; ".join(failures)

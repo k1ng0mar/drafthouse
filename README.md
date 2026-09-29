@@ -1,14 +1,14 @@
 # Drafthouse
 
-**v1.0.0** — Open-source Claude Design–class verify harness for [Hermes Agent](https://github.com/NousResearch/hermes-agent).
+v1.0.0. An open-source Claude Design-style verify harness for [Hermes Agent](https://github.com/NousResearch/hermes-agent).
 
-Hermes already has the agent core. Drafthouse ships the **hidden check-and-correct loop**:
+Hermes already has the agent core. Drafthouse ships the check-and-correct loop around it:
 
 ```
 refs → bind tokens → generate → P0 checklist → 5-dim → lint → vision → human
 ```
 
-## Quick start (safe)
+## Quick start
 
 ```bash
 export PYTHONPATH="$PWD/src" DRAFTHOUSE_ROOT="$PWD"
@@ -17,30 +17,31 @@ bash bin/drafthouse lint tests/fixtures/clean.html --system design-systems/defau
 python3 scripts/eval_plate.py
 ```
 
-Docker lab (does **not** touch live `~/.hermes`):
+The Docker lab leaves your live `~/.hermes` untouched:
 
 ```bash
 sudo docker compose -f docker/docker-compose.yml run --rm drafthouse-lab
 ```
 
-Optional live install: `python3 -m drafthouse.install_hermes --dry-run` first.
+For a live install, run `python3 -m drafthouse.install_hermes --dry-run` first and read what it plans to write.
 
-## What’s in the box
+## What's in the box
 
 | Area | Contents |
 |------|----------|
-| Skills | verify · systems · references · vision |
-| Gates | lint P0 · tokens · 5-dim · vision (max 3 rounds) |
-| MCP | 10 stdio tools (lint/bind/refs/vision/…) |
-| Systems | default · editorial-field · saas-minimal · developer-docs · dark-product |
-| Refs | 57+ galleries + 10 playbooks |
+| Skills | verify, systems, references, vision |
+| Gates | lint P0, tokens, 5-dim, vision (max 3 rounds) |
+| MCP | 11 stdio tools (lint, bind, refs, vision, doctor) |
+| Systems | default, editorial-field, saas-minimal, developer-docs, dark-product |
+| Refs | 57 galleries + 10 playbooks |
 | Evals | golden plates + honesty stub |
-| Ops | doctor · sandbox installer · Docker CI |
+| Ops | doctor, sandbox installer, Docker CI |
 
 ## Docs
 
-- [CHANGELOG](CHANGELOG.md) · [CONTRIBUTING](CONTRIBUTING.md) · [Security](docs/security.md) · [Onboarding](docs/onboarding.md)
+- [CHANGELOG](CHANGELOG.md), [CONTRIBUTING](CONTRIBUTING.md), [Security](docs/security.md), [Onboarding](docs/onboarding.md)
 - Monorepo finish plan: `../docs/DRAFTHOUSE_FINISH_PLAN.md`
+- Benchmarks: `../docs/benchmarks.md`
 - Handbook: https://k1ng0mar.github.io/drafthouse-hermes-handbook/
 
 ## License
