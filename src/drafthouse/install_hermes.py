@@ -55,20 +55,19 @@ def render_yaml_snippet(python_bin: str, product: Path) -> str:
     block = build_mcp_block(python_bin, product)
     args = list(block.get("args") or [])
     lines = [
-        "# Add under ~/.hermes/config.yaml  (mcp: → servers: → drafthouse:)",
-        "mcp:",
-        "  servers:",
-        "    drafthouse:",
-        f"      command: {block['command']}",
-        "      args:",
+        "# Add under ~/.hermes/config.yaml  (mcp_servers: -> drafthouse:)",
+        "mcp_servers:",
+        "  drafthouse:",
+        f"    command: {block['command']}",
+        "    args:",
     ]
     for a in args:
-        lines.append(f"        - {a}")
+        lines.append(f"      - {a}")
     lines += [
-        "      env:",
-        f"        DRAFTHOUSE_ROOT: {block['env']['DRAFTHOUSE_ROOT']}",
-        f"        PYTHONPATH: {block['env']['PYTHONPATH']}",
-        f"      description: {json_quote(block['description'])}",
+        "    env:",
+        f"      DRAFTHOUSE_ROOT: {block['env']['DRAFTHOUSE_ROOT']}",
+        f"      PYTHONPATH: {block['env']['PYTHONPATH']}",
+        f"    description: {json_quote(block['description'])}",
         "",
         "drafthouse:",
         "  design_system: default",
@@ -100,7 +99,7 @@ def merge_hermes_config(config_path: Path, python_bin: str, product: Path, dry_r
         return action
 
     text = config_path.read_text(encoding="utf-8")
-    if "drafthouse:" in text and "mcp:" in text and "DRAFTHOUSE_ROOT" in text:
+    if "mcp_servers:" in text and "drafthouse:" in text and "DRAFTHOUSE_ROOT" in text:
         return f"{config_path} already contains drafthouse MCP block (skipped)"
 
     # Append a clearly marked section — safest without a YAML dependency.
