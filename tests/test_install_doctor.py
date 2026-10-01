@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import re
 import sys
 import tempfile
 import unittest
@@ -39,6 +40,33 @@ class InstallerIdempotencyTests(unittest.TestCase):
             self.assertTrue(config.exists())
             self.assertIn("drafthouse", config.read_text(encoding="utf-8"))
             self.assertIn("create", note.lower())
+
+    def test_insert_under_existing_mcp_servers_map(self) -> None:
+        # A config that already has an mcp_servers map must have drafthouse
+        # inserted into it, not a second top-level mcp_servers: key.
+        with tempfile.TemporaryDirectory() as tmp:
+            config = Path(tmp) / "config.yaml"
+            config.write_text(
+                "model: default\n"
+                "mcp_servers:\n"
+                "  aws-mcp:\n"
+                "    command: /usr/bin/uvx\n"
+                "  cloudflare-docs:\n"
+                "    url: https://example/mcp\n"
+                "platform_toolsets:\n"
+                "  cli:\n"
+                "    - hermes-cli\n",
+                encoding="utf-8",
+            )
+            note = merge_hermes_config(config, sys.executable, ROOT, dry_run=False)
+            self.assertIn("insert", note.lower())
+            text = config.read_text(encoding="utf-8")
+            self.assertEqual(len(re.findall(r"^mcp_servers:", text, re.M)), 1)
+            mcp_body = text.split("mcp_servers:", 1)[1].split("\nplatform_toolsets:")[0]
+            self.assertIn("\n  drafthouse:", mcp_body)
+            self.assertIn("aws-mcp", text)
+            self.assertIn("platform_toolsets", text)
+            self.assertEqual(text.count("drafthouse.mcp_server"), 1)
 
     def test_dry_run_writes_nothing(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

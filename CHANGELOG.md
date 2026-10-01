@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.0.1 — 2026-09-30
+
+Installer and benchmark fixes on top of 1.0.0. No API changes.
+
+### Changed
+- Installer writes into the live `mcp_servers:` map instead of appending a second
+  top-level `mcp_servers:` key. A config that already has `mcp_servers:` gets the
+  drafthouse entry nested under it, so existing servers are not shadowed.
+- Benchmark MCP cold-start is now measured as an overhead delta over a bare
+  interpreter spawn in the same run, with a legacy absolute check available via
+  `DRAFTHOUSE_BENCH_ABSOLUTE_MCP=1`. Absolute targets did not transfer across
+  hosts (interpreter, sitecustomize, FUSE, load).
+
+### Fixed
+- Idempotency check looked for a key that no longer exists, so a second install
+  would re-append. Detection now matches the real `mcp_servers.drafthouse` block.
+
 ## 1.0.0 — 2026-09-18
 
 First stable Drafthouse release: Claude Design–class verify harness for Hermes Agent.

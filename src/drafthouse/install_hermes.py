@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import re
 import shutil
 import sys
 from pathlib import Path
@@ -52,22 +53,34 @@ def build_mcp_block(python_bin: str, product: Path) -> dict:
 
 
 def render_yaml_snippet(python_bin: str, product: Path) -> str:
+    lines = ["# Add under ~/.hermes/config.yaml  (mcp_servers: -> drafthouse:)"]
+    lines += _mcp_server_entry(python_bin, product)
+    lines += _admin_lock_block()
+    return "\n".join(lines) + "\n"
+
+
+def _mcp_server_entry(python_bin: str, product: Path) -> list[str]:
+    """The drafthouse entry for mcp_servers. No header, for insertion under an existing map."""
     block = build_mcp_block(python_bin, product)
-    args = list(block.get("args") or [])
     lines = [
-        "# Add under ~/.hermes/config.yaml  (mcp_servers: -> drafthouse:)",
         "mcp_servers:",
         "  drafthouse:",
         f"    command: {block['command']}",
         "    args:",
     ]
-    for a in args:
+    for a in list(block.get("args") or []):
         lines.append(f"      - {a}")
     lines += [
         "    env:",
         f"      DRAFTHOUSE_ROOT: {block['env']['DRAFTHOUSE_ROOT']}",
         f"      PYTHONPATH: {block['env']['PYTHONPATH']}",
         f"    description: {json_quote(block['description'])}",
+    ]
+    return lines
+
+
+def _admin_lock_block() -> list[str]:
+    return [
         "",
         "drafthouse:",
         "  design_system: default",
@@ -82,7 +95,6 @@ def render_yaml_snippet(python_bin: str, product: Path) -> str:
         "    enabled: true",
         "    catalog: auto  # copies under ~/.hermes/design-systems/drafthouse/references",
     ]
-    return "\n".join(lines) + "\n"
 
 
 def json_quote(s: str) -> str:
@@ -90,21 +102,34 @@ def json_quote(s: str) -> str:
 
 
 def merge_hermes_config(config_path: Path, python_bin: str, product: Path, dry_run: bool) -> str:
-    snippet = render_yaml_snippet(python_bin, product)
     if not config_path.exists():
         action = f"would create {config_path}" if dry_run else f"created {config_path}"
         if not dry_run:
             config_path.parent.mkdir(parents=True, exist_ok=True)
-            config_path.write_text(snippet, encoding="utf-8")
+            config_path.write_text(render_yaml_snippet(python_bin, product), encoding="utf-8")
         return action
 
     text = config_path.read_text(encoding="utf-8")
     if "mcp_servers:" in text and "drafthouse:" in text and "DRAFTHOUSE_ROOT" in text:
         return f"{config_path} already contains drafthouse MCP block (skipped)"
 
-    # Append a clearly marked section — safest without a YAML dependency.
+    entry_lines = _mcp_server_entry(python_bin, product)[1:]  # drop the mcp_servers header
+    # Insert the drafthouse entry into the existing top-level mcp_servers map so
+    # existing servers are not shadowed by a duplicate key.
+    m = re.search(r"^mcp_servers:\s*$\n((?:[ \t]+\S.*\n)*)(?=\S|\Z)", text, re.M)
+    if m:
+        addition = "\n".join(entry_lines) + "\n"
+        if dry_run:
+            return f"would insert drafthouse entry into mcp_servers in {config_path}"
+        backup = config_path.with_suffix(config_path.suffix + ".bak.drafthouse")
+        shutil.copy2(config_path, backup)
+        insert_at = m.start(1) + len(m.group(1))
+        config_path.write_text(text[:insert_at] + addition + text[insert_at:], encoding="utf-8")
+        return f"inserted drafthouse entry into mcp_servers in {config_path} (backup: {backup.name})"
+
+    # No mcp_servers map yet: append a clearly marked section — safest without a YAML dependency.
     marker = "# --- drafthouse (managed) ---"
-    addition = f"\n{marker}\n{snippet}"
+    addition = f"\n{marker}\n" + "\n".join(_mcp_server_entry(python_bin, product)) + "\n" + "\n".join(_admin_lock_block()) + "\n"
     if dry_run:
         return f"would append drafthouse MCP block to {config_path}"
     backup = config_path.with_suffix(config_path.suffix + ".bak.drafthouse")

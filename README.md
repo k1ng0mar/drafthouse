@@ -40,8 +40,7 @@ For a live install, run `python3 -m drafthouse.install_hermes --dry-run` first a
 ## Docs
 
 - [CHANGELOG](CHANGELOG.md), [CONTRIBUTING](CONTRIBUTING.md), [Security](docs/security.md), [Onboarding](docs/onboarding.md)
-- Monorepo finish plan: `../docs/DRAFTHOUSE_FINISH_PLAN.md`
-- Benchmarks: `../docs/benchmarks.md`
+- Performance targets: `scripts/bench.py` (run with `PYTHONPATH=src python3 scripts/bench.py`)
 - Handbook: https://k1ng0mar.github.io/drafthouse-hermes-handbook/
 
 ## License
