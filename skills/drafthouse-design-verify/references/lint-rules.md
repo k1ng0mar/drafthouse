@@ -20,6 +20,11 @@ Keep this file in sync when adding rules.
 | `file-missing` | P0 | Path does not exist |
 | token checks | P0 (gate) | Off-palette hex, unknown CSS vars (via `--system`) |
 
+Note: `designer-chrome-leak` excludes the standard responsive
+`<meta name="viewport">` tag (both quote styles) — it is valid HTML, not
+designer chrome. Visible chrome phrases (`Viewport: 1440px` labels,
+`Design Mode` toggles, …) still fail P0.
+
 ## Output contract
 
 JSON:

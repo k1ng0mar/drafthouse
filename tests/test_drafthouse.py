@@ -40,6 +40,33 @@ class LintTests(unittest.TestCase):
         self.assertEqual(result.p0, [], msg=result.to_markdown())
         self.assertTrue(result.pass_gate)
 
+    def test_viewport_meta_tag_not_flagged_as_chrome_leak(self) -> None:
+        # The standard responsive meta tag is valid HTML, not designer chrome.
+        fixture = Path(__file__).resolve().parent / "fixtures" / "viewport-meta-ok.html"
+        result = lint_text(fixture.read_text(encoding="utf-8"), path=str(fixture))
+        self.assertFalse(
+            any(i.rule_id == "designer-chrome-leak" for i in result.p0),
+            msg=result.to_markdown(),
+        )
+        # Single-quoted variant too.
+        result = lint_text("<head><meta name='viewport' content='width=device-width'></head>")
+        self.assertFalse(any(i.rule_id == "designer-chrome-leak" for i in result.p0))
+
+    def test_designer_chrome_labels_still_flagged(self) -> None:
+        # The narrowing must not blind the rule: real chrome phrases still fire.
+        for snippet in (
+            "<div>Viewport: 1440px</div>",
+            "<button>Design Mode</button>",
+            "<span>Breakpoint: md</span>",
+            "<div>Token Inspector</div>",
+            "<div>Demo Controls</div>",
+        ):
+            result = lint_text(snippet)
+            self.assertTrue(
+                any(i.rule_id == "designer-chrome-leak" for i in result.p0),
+                msg=f"chrome leak not flagged: {snippet}",
+            )
+
 
 class CritiqueTests(unittest.TestCase):
     def test_parse_block(self) -> None:
