@@ -1,15 +1,15 @@
 ---
-name: hermes-design-verify
+name: drafthouse-design-verify
 description: Always-on design quality gate — lint, 5-dim self-check, token bind before you show work
 version: 0.2.0
 author: Drafthouse
 license: MIT
 metadata:
   hermes:
-    pairs_with: [claude-design, design-md, popular-web-designs, hermes-design-references, hermes-design-vision]
+    pairs_with: [claude-design, design-md, popular-web-designs, drafthouse-design-references, drafthouse-design-vision]
 ---
 
-# Hermes design verify
+# Drafthouse design verify
 
 You are about to produce or revise a **visual artifact** (HTML page, deck slide,
 one-pager, email, mockup). Claude Design-grade quality means **check and correct
@@ -17,7 +17,7 @@ before the human treats it as done**.
 
 Process taste and layout live in `creative/claude-design`. Brand systems live in
 `creative/popular-web-designs` / `creative/design-md`. Pattern galleries live in
-`hermes-design-references`. **This skill owns the gate.**
+`drafthouse-design-references`. **This skill owns the gate.**
 
 ## Binding order
 
@@ -84,7 +84,7 @@ Token off-palette colors also fail the gate when a design system is active.
 
 ### L4 — Optional vision (config `vision_gate: true`)
 
-Use skill **`hermes-design-vision`** when enabled or when the human asks for visual QA:
+Use skill **`drafthouse-design-vision`** when enabled or when the human asks for visual QA:
 
 1. `desktop_preview` the artifact  
 2. `vision_analyze` screenshot with MCP `drafthouse_vision_rubric`  

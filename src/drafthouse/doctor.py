@@ -184,7 +184,7 @@ def run_doctor() -> DoctorReport:
 
     # Skills presence in target home
     skills_dir = home / "skills"
-    verify = skills_dir / "hermes-design-verify" / "SKILL.md"
+    verify = skills_dir / "drafthouse-design-verify" / "SKILL.md"
     if verify.exists():
         report.checks.append(Check("skills-installed", "ok", f"verify skill present in {skills_dir}"))
     else:

@@ -206,7 +206,7 @@ def main(argv: list[str] | None = None) -> int:
     print("  1. Make wrappers executable:  chmod +x bin/drafthouse bin/drafthouse-mcp")
     print("  2. Put bin/ on PATH (or call by absolute path)")
     print("  3. Restart Hermes / new conversation so skills + MCP load")
-    print("  4. In Hermes:  /hermes-design-verify   or ask to lint an HTML artifact")
+    print("  4. In Hermes:  /drafthouse-design-verify   or ask to lint an HTML artifact")
     print("  Optional pip install if you want the `drafthouse` console script globally.")
     return 0
 

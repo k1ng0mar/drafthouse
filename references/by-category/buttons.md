@@ -8,3 +8,10 @@ Study structure/hierarchy only. Re-skin via active `DESIGN.md` tokens.
 - **ID:** `simply-buttons`
 - **Best for:** Button styles and states
 - **Tags:** buttons, controls
+
+## Gradient Buttons
+
+- **URL:** https://gradientbuttons.colorion.co
+- **ID:** `gradient-buttons`
+- **Best for:** Gradient buttons
+- **Tags:** buttons, gradient

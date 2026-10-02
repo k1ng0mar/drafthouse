@@ -22,3 +22,10 @@ Study structure/hierarchy only. Re-skin via active `DESIGN.md` tokens.
 - **ID:** `whimsy`
 - **Best for:** Playful illustration in product — only if brand allows
 - **Tags:** illustration
+
+## Kitbitz
+
+- **URL:** https://kitbitz.art
+- **ID:** `kitbitz`
+- **Best for:** 2000+ hand-drawn illustrations
+- **Tags:** illustration, hand-drawn

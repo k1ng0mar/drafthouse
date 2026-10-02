@@ -21,7 +21,7 @@ bash scripts/ci.sh
 ## Adding a lint rule
 
 1. Implement in `src/drafthouse/lint.py` with rule id + severity
-2. Document in `skills/hermes-design-verify/references/lint-rules.md`
+2. Document in `skills/drafthouse-design-verify/references/lint-rules.md`
 3. Add `tests/fixtures/slop-*.html` that **must** fail
 4. Keep rules deterministic (no model calls)
 

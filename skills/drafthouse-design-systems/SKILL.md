@@ -1,12 +1,12 @@
 ---
-name: hermes-design-systems
+name: drafthouse-design-systems
 description: Bind portable DESIGN.md + tokens.css packages into Hermes design work
 version: 0.1.0
 author: Drafthouse
 license: MIT
 metadata:
   hermes:
-    pairs_with: [hermes-design-verify, design-md, claude-design]
+    pairs_with: [drafthouse-design-verify, design-md, claude-design]
 ---
 
 # Design systems (Drafthouse packages)

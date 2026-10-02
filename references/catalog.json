@@ -1,6 +1,6 @@
 {
-  "version": "2026.09.18",
-  "count": 57,
+  "version": "2026.10.02",
+  "count": 104,
   "categories": [
     "3d",
     "animation",
@@ -675,6 +675,531 @@
         "product-ui",
         "docs",
         "fintech"
+      ]
+    },
+    {
+      "id": "balsa-ui",
+      "category": "ui-components",
+      "name": "Balsa UI",
+      "url": "https://balsa-ui.com",
+      "best_for": "Minimal component set",
+      "tags": [
+        "components",
+        "minimal"
+      ]
+    },
+    {
+      "id": "springs-studio",
+      "category": "ui-components",
+      "name": "Springs Studio",
+      "url": "https://springs.studio",
+      "best_for": "Component studio",
+      "tags": [
+        "components",
+        "studio"
+      ]
+    },
+    {
+      "id": "animos",
+      "category": "ui-components",
+      "name": "Animos",
+      "url": "https://animos.app",
+      "best_for": "Animated components",
+      "tags": [
+        "components",
+        "animated"
+      ]
+    },
+    {
+      "id": "tegaki",
+      "category": "ui-components",
+      "name": "Tegaki",
+      "url": "https://gkurt.com/tegaki",
+      "best_for": "Hand-drawn UI style",
+      "tags": [
+        "components",
+        "hand-drawn"
+      ]
+    },
+    {
+      "id": "meshfont",
+      "category": "ui-components",
+      "name": "Meshfont",
+      "url": "https://meshfont.com",
+      "best_for": "Mesh-styled type UI",
+      "tags": [
+        "components",
+        "type",
+        "mesh"
+      ]
+    },
+    {
+      "id": "spectrum-ui",
+      "category": "ui-components",
+      "name": "Spectrum UI",
+      "url": "https://ui.spectrumhq.in",
+      "best_for": "React component set",
+      "tags": [
+        "components",
+        "react"
+      ]
+    },
+    {
+      "id": "shadcnblocks",
+      "category": "ui-components",
+      "name": "shadcnblocks",
+      "url": "https://shadcnblocks.com",
+      "best_for": "Blocks built on shadcn",
+      "tags": [
+        "components",
+        "shadcn",
+        "blocks"
+      ]
+    },
+    {
+      "id": "react-bits",
+      "category": "ui-components",
+      "name": "React Bits",
+      "url": "https://reactbits.dev",
+      "best_for": "React component patterns",
+      "tags": [
+        "components",
+        "react",
+        "patterns"
+      ]
+    },
+    {
+      "id": "8bitcn",
+      "category": "ui-components",
+      "name": "8bitcn",
+      "url": "https://8bitcn.com",
+      "best_for": "Retro 8-bit styled shadcn",
+      "tags": [
+        "components",
+        "shadcn",
+        "retro"
+      ]
+    },
+    {
+      "id": "evil-charts",
+      "category": "ui-components",
+      "name": "Evil Charts",
+      "url": "https://evilcharts.com",
+      "best_for": "Charts, deliberately unconventional",
+      "tags": [
+        "components",
+        "charts"
+      ]
+    },
+    {
+      "id": "coss-ui",
+      "category": "ui-components",
+      "name": "Coss UI",
+      "url": "https://coss.com/ui",
+      "best_for": "Component set",
+      "tags": [
+        "components"
+      ]
+    },
+    {
+      "id": "rare-ui",
+      "category": "ui-components",
+      "name": "Rare UI",
+      "url": "https://rareui.com",
+      "best_for": "Rare or unusual components",
+      "tags": [
+        "components",
+        "unusual"
+      ]
+    },
+    {
+      "id": "beui",
+      "category": "ui-components",
+      "name": "BeUI",
+      "url": "https://beui.dev",
+      "best_for": "Component set",
+      "tags": [
+        "components"
+      ]
+    },
+    {
+      "id": "easy-ui",
+      "category": "ui-components",
+      "name": "Easy UI",
+      "url": "https://easyui.site",
+      "best_for": "Component set",
+      "tags": [
+        "components"
+      ]
+    },
+    {
+      "id": "reui",
+      "category": "ui-components",
+      "name": "ReUI",
+      "url": "https://reui.io",
+      "best_for": "React and Tailwind components",
+      "tags": [
+        "components",
+        "react",
+        "tailwind"
+      ]
+    },
+    {
+      "id": "aceternity-ui",
+      "category": "ui-components",
+      "name": "Aceternity UI",
+      "url": "https://ui.aceternity.com",
+      "best_for": "Animated, showy components",
+      "tags": [
+        "components",
+        "animated"
+      ]
+    },
+    {
+      "id": "magic-ui",
+      "category": "ui-components",
+      "name": "Magic UI",
+      "url": "https://magicui.design",
+      "best_for": "Animated components",
+      "tags": [
+        "components",
+        "animated"
+      ]
+    },
+    {
+      "id": "uiverse",
+      "category": "ui-components",
+      "name": "Uiverse",
+      "url": "https://uiverse.io",
+      "best_for": "Community element library",
+      "tags": [
+        "components",
+        "community"
+      ]
+    },
+    {
+      "id": "uiable",
+      "category": "ui-components",
+      "name": "UIAble",
+      "url": "https://uiable.com",
+      "best_for": "Component set",
+      "tags": [
+        "components"
+      ]
+    },
+    {
+      "id": "microkit-ui",
+      "category": "ui-components",
+      "name": "MicroKit UI",
+      "url": "https://microkit.co",
+      "best_for": "Micro components",
+      "tags": [
+        "components",
+        "micro"
+      ]
+    },
+    {
+      "id": "mapcn",
+      "category": "ui-components",
+      "name": "mapcn",
+      "url": "https://mapcn.dev",
+      "best_for": "Maps, markers, routes, popups",
+      "tags": [
+        "components",
+        "maps"
+      ]
+    },
+    {
+      "id": "liquid-glass",
+      "category": "ui-components",
+      "name": "Liquid Glass",
+      "url": "https://glass.samasante.com",
+      "best_for": "Glass and refraction components",
+      "tags": [
+        "components",
+        "glass"
+      ]
+    },
+    {
+      "id": "kage",
+      "category": "web-inspo",
+      "name": "Kage",
+      "url": "https://kage.design",
+      "best_for": "UI inspiration mapped to prompts",
+      "tags": [
+        "inspo",
+        "prompts"
+      ]
+    },
+    {
+      "id": "component-gallery",
+      "category": "components",
+      "name": "Component Gallery",
+      "url": "https://component.gallery",
+      "best_for": "2600+ component examples",
+      "tags": [
+        "components",
+        "gallery"
+      ]
+    },
+    {
+      "id": "appshot-gallery",
+      "category": "product-ui",
+      "name": "AppShot Gallery",
+      "url": "https://appshot.gallery",
+      "best_for": "Real mobile app screenshots",
+      "tags": [
+        "product-ui",
+        "mobile",
+        "screenshots"
+      ]
+    },
+    {
+      "id": "landdding",
+      "category": "landing-pages",
+      "name": "Landdding",
+      "url": "https://landdding.com",
+      "best_for": "Real design references",
+      "tags": [
+        "landing",
+        "gallery"
+      ]
+    },
+    {
+      "id": "open-design",
+      "category": "web-inspo",
+      "name": "Open Design",
+      "url": "https://open-design.ai",
+      "best_for": "Design references",
+      "tags": [
+        "inspo",
+        "gallery"
+      ]
+    },
+    {
+      "id": "designmd",
+      "category": "web-inspo",
+      "name": "DesignMD",
+      "url": "https://designmd.me",
+      "best_for": "Design references",
+      "tags": [
+        "inspo"
+      ]
+    },
+    {
+      "id": "designmd-supply",
+      "category": "web-inspo",
+      "name": "DESIGNmd Supply",
+      "url": "https://designmd.supply",
+      "best_for": "Design supply",
+      "tags": [
+        "inspo",
+        "assets"
+      ]
+    },
+    {
+      "id": "designmd-hyperbrowser",
+      "category": "web-inspo",
+      "name": "DesignMD Hyperbrowser",
+      "url": "https://design-md.hyperbrowser.ai",
+      "best_for": "DesignMD hosted variant",
+      "tags": [
+        "inspo"
+      ]
+    },
+    {
+      "id": "designmd-ai",
+      "category": "design-systems",
+      "name": "DesignMD.ai",
+      "url": "https://designmd.ai",
+      "best_for": "Design systems in Markdown for agents",
+      "tags": [
+        "design-system",
+        "markdown",
+        "agents"
+      ]
+    },
+    {
+      "id": "typeui",
+      "category": "type",
+      "name": "TypeUI",
+      "url": "https://typeui.sh",
+      "best_for": "Typography-driven UI",
+      "tags": [
+        "typography",
+        "type"
+      ]
+    },
+    {
+      "id": "vibeprompt",
+      "category": "product-ui",
+      "name": "VibePrompt",
+      "url": "https://vibeprompts.dev",
+      "best_for": "Prompts for dashboards and landing pages",
+      "tags": [
+        "product-ui",
+        "prompts",
+        "dashboard"
+      ]
+    },
+    {
+      "id": "logotouse",
+      "category": "rebrands",
+      "name": "LogoToUse",
+      "url": "https://logotouse.com",
+      "best_for": "Logo inspiration",
+      "tags": [
+        "logo",
+        "brand"
+      ]
+    },
+    {
+      "id": "motion-primitives",
+      "category": "animation",
+      "name": "Motion Primitives",
+      "url": "https://motion-primitives.com",
+      "best_for": "Motion-focused components",
+      "tags": [
+        "animation",
+        "components",
+        "motion"
+      ]
+    },
+    {
+      "id": "motionin",
+      "category": "animation",
+      "name": "MotionIn",
+      "url": "https://motionin.design",
+      "best_for": "Animation inspiration",
+      "tags": [
+        "animation",
+        "motion"
+      ]
+    },
+    {
+      "id": "scrolltide",
+      "category": "animation",
+      "name": "ScrollTide",
+      "url": "https://scrolltide.co",
+      "best_for": "200+ build prompts for 3D and scroll-driven sites",
+      "tags": [
+        "animation",
+        "scroll",
+        "3d",
+        "prompts"
+      ]
+    },
+    {
+      "id": "kinetics",
+      "category": "animation",
+      "name": "Kinetics",
+      "url": "https://kinetics.colorion.co",
+      "best_for": "150+ motion effects with React code and prompts",
+      "tags": [
+        "animation",
+        "react",
+        "prompts"
+      ]
+    },
+    {
+      "id": "anime-js",
+      "category": "animation",
+      "name": "Anime.js",
+      "url": "https://animejs.com",
+      "best_for": "Animation library, canonical docs",
+      "tags": [
+        "animation",
+        "library",
+        "docs"
+      ]
+    },
+    {
+      "id": "css-text-effects",
+      "category": "animation",
+      "name": "CSS Text Effects",
+      "url": "https://text-effects.colorion.co",
+      "best_for": "Text effects",
+      "tags": [
+        "animation",
+        "text"
+      ]
+    },
+    {
+      "id": "circle-loaders",
+      "category": "animation",
+      "name": "Circle Loaders",
+      "url": "https://circleloaders.dominikakissi.com",
+      "best_for": "Loaders",
+      "tags": [
+        "animation",
+        "loaders"
+      ]
+    },
+    {
+      "id": "gradient-buttons",
+      "category": "buttons",
+      "name": "Gradient Buttons",
+      "url": "https://gradientbuttons.colorion.co",
+      "best_for": "Gradient buttons",
+      "tags": [
+        "buttons",
+        "gradient"
+      ]
+    },
+    {
+      "id": "kitbitz",
+      "category": "illustration",
+      "name": "Kitbitz",
+      "url": "https://kitbitz.art",
+      "best_for": "2000+ hand-drawn illustrations",
+      "tags": [
+        "illustration",
+        "hand-drawn"
+      ]
+    },
+    {
+      "id": "3dicons",
+      "category": "icons",
+      "name": "3Dicons",
+      "url": "https://3dicons.co",
+      "best_for": "3D icon set",
+      "tags": [
+        "icons",
+        "3d"
+      ]
+    },
+    {
+      "id": "shadcn-ui",
+      "category": "design-systems",
+      "name": "shadcn/ui",
+      "url": "https://ui.shadcn.com",
+      "best_for": "Component docs \u2014 the baseline everyone copies",
+      "tags": [
+        "design-system",
+        "shadcn",
+        "docs"
+      ]
+    },
+    {
+      "id": "aura",
+      "category": "design-systems",
+      "name": "Aura",
+      "url": "https://aura.build",
+      "best_for": "Agent-facing design system",
+      "tags": [
+        "design-system",
+        "agents"
+      ]
+    },
+    {
+      "id": "neuform",
+      "category": "design-systems",
+      "name": "Neuform",
+      "url": "https://neuform.ai",
+      "best_for": "Agent-facing design system",
+      "tags": [
+        "design-system",
+        "agents"
       ]
     }
   ]

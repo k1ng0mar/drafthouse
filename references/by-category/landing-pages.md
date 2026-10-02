@@ -22,3 +22,10 @@ Study structure/hierarchy only. Re-skin via active `DESIGN.md` tokens.
 - **ID:** `lapa-ninja`
 - **Best for:** Landing page gallery
 - **Tags:** landing, gallery
+
+## Landdding
+
+- **URL:** https://landdding.com
+- **ID:** `landdding`
+- **Best for:** Real design references
+- **Tags:** landing, gallery

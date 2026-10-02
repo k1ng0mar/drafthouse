@@ -22,3 +22,10 @@ Study structure/hierarchy only. Re-skin via active `DESIGN.md` tokens.
 - **ID:** `type-scale`
 - **Best for:** Type scale exploration
 - **Tags:** typography, scale
+
+## TypeUI
+
+- **URL:** https://typeui.sh
+- **ID:** `typeui`
+- **Best for:** Typography-driven UI
+- **Tags:** typography, type

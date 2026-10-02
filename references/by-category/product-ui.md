@@ -57,3 +57,17 @@ Study structure/hierarchy only. Re-skin via active `DESIGN.md` tokens.
 - **ID:** `ui-garage`
 - **Best for:** UI kit / screen samples
 - **Tags:** ui, kits
+
+## AppShot Gallery
+
+- **URL:** https://appshot.gallery
+- **ID:** `appshot-gallery`
+- **Best for:** Real mobile app screenshots
+- **Tags:** product-ui, mobile, screenshots
+
+## VibePrompt
+
+- **URL:** https://vibeprompts.dev
+- **ID:** `vibeprompt`
+- **Best for:** Prompts for dashboards and landing pages
+- **Tags:** product-ui, prompts, dashboard

@@ -1,12 +1,12 @@
 ---
-name: hermes-design-references
+name: drafthouse-design-references
 description: Look up real-world design galleries by pattern — navbars, heroes, CTAs, pricing, product UI
 version: 0.1.0
 author: Drafthouse
 license: MIT
 metadata:
   hermes:
-    pairs_with: [hermes-design-verify, hermes-design-systems, claude-design]
+    pairs_with: [drafthouse-design-verify, drafthouse-design-systems, claude-design]
 ---
 
 # Design references
@@ -20,7 +20,7 @@ Do **not** clone pixel-for-pixel. Use references for:
 - state coverage (empty, hover, mobile)
 - restraint cues (what *not* to add)
 
-Always re-skin through the active design system (`hermes-design-systems` / `drafthouse bind`).
+Always re-skin through the active design system (`drafthouse-design-systems` / `drafthouse bind`).
 
 ## How to search
 
@@ -70,7 +70,7 @@ bash bin/drafthouse refs list
 2. `drafthouse_references_search` with that word + optional `tag`.
 3. Open 1–3 gallery URLs only if you can fetch them; otherwise read `best_for` notes and known craft rules.
 4. Sketch structure in tokens from the active DESIGN.md.
-5. Generate → `hermes-design-verify` gates (L1–L3, optional L4 vision).
+5. Generate → `drafthouse-design-verify` gates (L1–L3, optional L4 vision).
 
 ## Anti-usage
 

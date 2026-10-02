@@ -1,6 +1,6 @@
 """Deterministic anti-slop + structure lint for HTML/CSS design artifacts.
 
-Rules mirror skills/hermes-design-verify/references/lint-rules.md
+Rules mirror skills/drafthouse-design-verify/references/lint-rules.md
 L3 in the verify stack — no model calls.
 """
 

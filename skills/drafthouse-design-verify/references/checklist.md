@@ -1,4 +1,4 @@
-# P0 / P1 / P2 checklist — hermes-design-verify
+# P0 / P1 / P2 checklist — drafthouse-design-verify
 
 Read this **after writing** the artifact file. Every **P0** must pass before handoff.
 

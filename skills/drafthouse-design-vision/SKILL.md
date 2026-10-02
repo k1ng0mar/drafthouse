@@ -1,12 +1,12 @@
 ---
-name: hermes-design-vision
+name: drafthouse-design-vision
 description: L4 vision gate — screenshot the artifact, score visually, fix MUST_FIX before ship
 version: 0.1.0
 author: Drafthouse
 license: MIT
 metadata:
   hermes:
-    pairs_with: [hermes-design-verify, hermes-design-references]
+    pairs_with: [drafthouse-design-verify, drafthouse-design-references]
 ---
 
 # Vision gate (L4)

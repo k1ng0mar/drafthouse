@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+- **Skills renamed:** `hermes-design-*` → `drafthouse-design-*`
+  (`drafthouse-design-verify`, `drafthouse-design-systems`,
+  `drafthouse-design-references`, `drafthouse-design-vision`). The project is
+  Drafthouse; the `hermes-*` prefix was stale. Hermes Agent host paths
+  (`~/.hermes/…`) and the `install_hermes` module name are unchanged.
+
+### Added
+- **References:** catalog expanded 57 → 104 entries from the named
+  design-references registry (component libraries, motion, agent-facing
+  design systems). `references/catalog.json` regenerated (v2026.10.02);
+  per-category notes in `references/by-category/` updated.
+
 ## 1.0.1 — 2026-09-30
 
 Installer and benchmark fixes on top of 1.0.0. No API changes.

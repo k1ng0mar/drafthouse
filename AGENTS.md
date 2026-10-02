@@ -30,6 +30,6 @@ python3 -m drafthouse.mcp_server   # stdio MCP
 ## Adding a lint rule
 
 1. Add a regex/heuristic in `src/drafthouse/lint.py` with `severity` P0/P1/P2.
-2. Mirror the rule in `skills/hermes-design-verify/references/lint-rules.md`.
+2. Mirror the rule in `skills/drafthouse-design-verify/references/lint-rules.md`.
 3. Add a fixture under `tests/fixtures/` and a unit test.
 4. Keep rules **deterministic** — no model calls in L3.

@@ -29,3 +29,38 @@ Study structure/hierarchy only. Re-skin via active `DESIGN.md` tokens.
 - **ID:** `webinspoo`
 - **Best for:** Web inspiration feed
 - **Tags:** inspo, web
+
+## Kage
+
+- **URL:** https://kage.design
+- **ID:** `kage`
+- **Best for:** UI inspiration mapped to prompts
+- **Tags:** inspo, prompts
+
+## Open Design
+
+- **URL:** https://open-design.ai
+- **ID:** `open-design`
+- **Best for:** Design references
+- **Tags:** inspo, gallery
+
+## DesignMD
+
+- **URL:** https://designmd.me
+- **ID:** `designmd`
+- **Best for:** Design references
+- **Tags:** inspo
+
+## DESIGNmd Supply
+
+- **URL:** https://designmd.supply
+- **ID:** `designmd-supply`
+- **Best for:** Design supply
+- **Tags:** inspo, assets
+
+## DesignMD Hyperbrowser
+
+- **URL:** https://design-md.hyperbrowser.ai
+- **ID:** `designmd-hyperbrowser`
+- **Best for:** DesignMD hosted variant
+- **Tags:** inspo

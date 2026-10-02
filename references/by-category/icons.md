@@ -15,3 +15,10 @@ Study structure/hierarchy only. Re-skin via active `DESIGN.md` tokens.
 - **ID:** `lucide`
 - **Best for:** Open icon set
 - **Tags:** icons, open
+
+## 3Dicons
+
+- **URL:** https://3dicons.co
+- **ID:** `3dicons`
+- **Best for:** 3D icon set
+- **Tags:** icons, 3d
