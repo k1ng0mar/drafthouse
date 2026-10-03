@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+### Added
+- **Judge:** `judge_candidates()` in `drafthouse.critique` ranks N
+  `drafthouse-critique` blocks, returns the winner, and flags a close margin
+  (top two within 0.4 on the 10-point composite) so the choice can be handed
+  to the human instead of picked silently.
+- **MCP tool `drafthouse_judge`** (server now at 12 tools) and
+  `bash bin/drafthouse judge a.html b.html c.html` for the same ranking
+  from files.
+
 ### Changed
 - **Skills renamed:** `hermes-design-*` → `drafthouse-design-*`
   (`drafthouse-design-verify`, `drafthouse-design-systems`,

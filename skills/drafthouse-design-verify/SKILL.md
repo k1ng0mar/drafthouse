@@ -104,6 +104,19 @@ Lint P0 still wins over a pretty screenshot.
 
 When you lack a real value, use an honest stub (`—`, grey block, labelled placeholder).
 
+## Judge mode — three directions, one winner
+
+For open briefs, or when the human asks for options, produce three candidates with clearly different postures instead of one safe default:
+
+1. Plan three postures up front (minimal vs editorial vs brutalist, light vs dark, dense vs sparse). No near-duplicates.
+2. Write each candidate as its own file (`variant-a.html`, `variant-b.html`, `variant-c.html`). Run L1 + L3 on each.
+3. Score each candidate against the five L2 dimensions (honestly, not aspirationally), emit one `drafthouse-critique` block per variant.
+4. Call MCP `drafthouse_judge` with `candidates: {a: <block>, b: <block>, c: <block>}`.
+5. If `winner` is set and `close` is false, refine that variant through L4 and ship it. Leave the losing files in place, labeled.
+6. If `close` is true or no candidate passes, present all three to the human with their gate lines and let them pick.
+
+The judge only ranks; it does not see screenshots. L4 vision still applies to the chosen variant, full loop.
+
 ## Presentation rule
 
 Default: show the human **verified** work, with a one-line gate summary:
@@ -123,6 +136,7 @@ If they ask to see work mid-loop, label it **unverified** until gates pass.
 | Tokens | MCP `drafthouse_tokens_check` |
 | Pre-emit prompt | MCP `drafthouse_selfcheck` |
 | Parse scores | MCP `drafthouse_critique_parse` |
+| Rank variants | MCP `drafthouse_judge` / `bash bin/drafthouse judge a.html b.html c.html` |
 | Pattern refs | MCP `drafthouse_references_search` |
 | Vision rubric/parse | MCP `drafthouse_vision_rubric` / `drafthouse_vision_parse` |
 

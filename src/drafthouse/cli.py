@@ -99,6 +99,21 @@ def cmd_selfcheck(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_judge(args: argparse.Namespace) -> int:
+    from drafthouse.critique import judge_candidates
+
+    blocks = {}
+    for raw in args.paths:
+        path = Path(raw)
+        blocks[path.stem] = path.read_text(encoding="utf-8", errors="replace")
+    decision = judge_candidates(blocks)
+    print(json.dumps(decision.to_dict(), indent=2))
+    if decision.winner is None:
+        print("no candidate passed pre-emit; none ranked", file=sys.stderr)
+        return 1
+    return 0
+
+
 def critique_prompt() -> str:
     from drafthouse.critique import PREEMIT_PROMPT
 
@@ -140,6 +155,10 @@ def build_parser() -> argparse.ArgumentParser:
 
     p_sc = sub.add_parser("selfcheck", help="Print L2 5-dim pre-emit prompt")
     p_sc.set_defaults(func=cmd_selfcheck)
+
+    p_j = sub.add_parser("judge", help="Rank variant critique block files, print the winner")
+    p_j.add_argument("paths", nargs="+", help="Files containing drafthouse-critique blocks")
+    p_j.set_defaults(func=cmd_judge)
 
     def cmd_doctor(args: argparse.Namespace) -> int:
         from drafthouse.doctor import main as doctor_main

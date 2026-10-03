@@ -109,6 +109,61 @@ def parse_critique(text: str) -> CritiqueScores:
     return result
 
 
+# Close-margin threshold on the 1-5 composite. A 0.2 gap is one average step
+# on the 5-dim scale, i.e. the two candidates are one point apart across the
+# five dimensions.
+JUDGE_CLOSE_MARGIN = 0.2
+
+
+@dataclass(slots=True)
+class JudgeDecision:
+    candidates: list[dict] = field(default_factory=list)
+    winner: str | None = None
+    close: bool = False
+
+    def to_dict(self) -> dict:
+        return {
+            "candidates": self.candidates,
+            "winner": self.winner,
+            "close": self.close,
+        }
+
+
+def judge_candidates(blocks: dict[str, str]) -> JudgeDecision:
+    """Rank candidate critique blocks.
+
+    A candidate ranks when it passes pre-emit (every dim >= 3). Winner is the
+    highest composite among passing candidates. A top-two gap within
+    JUDGE_CLOSE_MARGIN sets close=True: show the human the choice instead of
+    picking silently.
+    """
+    ranked = []
+    for name, text in blocks.items():
+        scores = parse_critique(text)
+        ranked.append(
+            {
+                "name": name,
+                "scores": scores.scores,
+                "composite": scores.composite_deep,
+                "min_dim": scores.min_score,
+                "passes_preemit": scores.passes_preemit,
+                "must_fix": scores.must_fix,
+            }
+        )
+    passing = [r for r in ranked if r["passes_preemit"]]
+    decision = JudgeDecision(candidates=ranked)
+    if not passing:
+        return decision
+    passing.sort(key=lambda r: r["composite"], reverse=True)
+    decision.winner = passing[0]["name"]
+    if len(passing) > 1:
+        # round to 2dp before comparing: composites are averages of ints on a
+        # 1-5 scale, and 4.0 - 3.8 is 0.20000000000000018 in float.
+        gap = round(passing[0]["composite"] - passing[1]["composite"], 2)
+        decision.close = gap <= JUDGE_CLOSE_MARGIN
+    return decision
+
+
 def format_score_block(scores: dict[str, int], must_fix: list[str] | None = None) -> str:
     lines = ["```drafthouse-critique"]
     for dim in PREEMIT_DIMENSIONS:

@@ -6,6 +6,7 @@ Tools:
   drafthouse_bind          — DESIGN.md / tokens bind block
   drafthouse_selfcheck     — L2 5-dim pre-emit prompt
   drafthouse_critique_parse— parse a critique score block
+  drafthouse_judge         — rank variant critique blocks, flag close margins
   drafthouse_systems_list  — known design-system packages
 
 Protocol: newline-delimited JSON-RPC 2.0 on stdio (MCP subset sufficient
@@ -52,9 +53,9 @@ def _refs():
 
 
 def _critique():
-    from drafthouse.critique import PREEMIT_PROMPT, parse_critique
+    from drafthouse.critique import PREEMIT_PROMPT, judge_candidates, parse_critique
 
-    return PREEMIT_PROMPT, parse_critique
+    return PREEMIT_PROMPT, parse_critique, judge_candidates
 
 
 def _vision():
@@ -204,6 +205,25 @@ TOOLS = [
             "required": ["text"],
         },
     },
+    {
+        "name": "drafthouse_judge",
+        "description": (
+            "Rank design-variant critique blocks, one per candidate (each text contains a "
+            "```drafthouse-critique block). Returns the winner; close=True means the top two "
+            "are within 0.2 on the 1-5 composite, hand the choice to the human."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "candidates": {
+                    "type": "object",
+                    "description": "variant name -> text containing its drafthouse-critique block",
+                    "minProperties": 2,
+                },
+            },
+            "required": ["candidates"],
+        },
+    },
 ]
 
 
@@ -281,9 +301,23 @@ def call_tool(name: str, args: dict[str, Any]) -> dict[str, Any]:
         return {"content": [{"type": "text", "text": PREEMIT_PROMPT}]}
 
     if name == "drafthouse_critique_parse":
-        _, parse_critique = _critique()
+        _, parse_critique, _ = _critique()
         scores = parse_critique(str(args.get("text") or ""))
         return {"content": [{"type": "text", "text": json.dumps(scores.to_dict(), indent=2)}]}
+
+    if name == "drafthouse_judge":
+        _, _, judge_candidates = _critique()
+        raw = args.get("candidates") or {}
+        blocks = {str(k): str(v) for k, v in raw.items()}
+        if len(blocks) < 2:
+            return {
+                "content": [
+                    {"type": "text", "text": json.dumps({"error": "need at least 2 candidates"})}
+                ],
+                "isError": True,
+            }
+        decision = judge_candidates(blocks)
+        return {"content": [{"type": "text", "text": json.dumps(decision.to_dict(), indent=2)}]}
 
     if name == "drafthouse_systems_list":
         return {"content": [{"type": "text", "text": json.dumps(list_systems(), indent=2)}]}
