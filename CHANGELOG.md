@@ -1,24 +1,25 @@
 # Changelog
 
-## Unreleased
+## 1.0.2 — 2026-10-04
 
 ### Added
 - **Judge:** `judge_candidates()` in `drafthouse.critique` ranks N
   `drafthouse-critique` blocks, returns the winner, and flags a close margin
-  (top two within 0.4 on the 10-point composite) so the choice can be handed
-  to the human instead of picked silently.
+  (top two within 0.2 on the 1-5 composite) so the choice can be handed to
+  the human instead of picked silently.
 - **MCP tool `drafthouse_judge`** (server now at 12 tools) and
   `bash bin/drafthouse judge a.html b.html c.html` for the same ranking
   from files.
+- **Lint fix:** `<meta name="viewport">` no longer false-positives as
+  designer chrome; real chrome phrases (`Viewport: 1440px`, `Design Mode`,
+  `Token Inspector`) still get flagged.
 
 ### Changed
 - **Skills renamed:** `hermes-design-*` → `drafthouse-design-*`
   (`drafthouse-design-verify`, `drafthouse-design-systems`,
-  `drafthouse-design-references`, `drafthouse-design-vision`). The project is
-  Drafthouse; the `hermes-*` prefix was stale. Hermes Agent host paths
+  `drafthouse-design-references`, `drafthouse-design-vision`). The project
+  is Drafthouse; the `hermes-*` prefix was stale. Hermes Agent host paths
   (`~/.hermes/…`) and the `install_hermes` module name are unchanged.
-
-### Added
 - **References:** catalog expanded 57 → 104 entries from the named
   design-references registry (component libraries, motion, agent-facing
   design systems). `references/catalog.json` regenerated (v2026.10.02);
