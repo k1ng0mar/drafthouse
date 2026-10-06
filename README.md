@@ -31,7 +31,24 @@ python3 -m drafthouse.doctor
 bash bin/drafthouse lint tests/fixtures/clean.html --system design-systems/default
 ```
 
-For a live install, run `python3 -m drafthouse.install_hermes --dry-run` first and read what it plans to write. The Docker lab leaves your live `~/.hermes` untouched:
+## Install into Hermes
+
+Simplest-to-install is three lines. Clone, install the skills, register the MCP server:
+
+```bash
+git clone https://github.com/k1ng0mar/drafthouse && cd drafthouse
+python3 -m drafthouse.install_hermes          # copies skills + writes the drafthouse: admin block
+hermes mcp add drafthouse --command "$PWD/bin/drafthouse-mcp" --env DRAFTHOUSE_ROOT="$PWD" --env PYTHONPATH="$PWD/src"
+```
+
+The installer prints the exact `hermes mcp add` command for your paths. It does not hand-edit your `mcp_servers:` map; the MCP registration goes through the native `hermes mcp` command, and `hermes mcp remove drafthouse` is the matching uninstall. To remove the installed skills later:
+
+```bash
+python3 -m drafthouse.install_hermes --uninstall
+hermes mcp remove drafthouse
+```
+
+For a fully isolated run that leaves your live `~/.hermes` untouched, the Docker lab works the same way:
 
 ```bash
 sudo docker compose -f docker/docker-compose.yml run --rm drafthouse-lab

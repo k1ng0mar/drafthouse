@@ -1,4 +1,14 @@
-"""Hermes installer — writes MCP config + copies skills without forking core.
+"""Hermes installer — copies skills/design-systems/references into a Hermes home.
+
+Simplest-to-install shape:
+  1. copy skills, design-systems, and the reference catalog into the Hermes home
+  2. write the small `drafthouse:` admin block (default design system, gate flags)
+  3. print the exact `hermes mcp add` command for the user to run — no YAML surgery
+
+The MCP server registration is left to `hermes mcp add` because that is the
+sanctioned Hermes path: it validates the config, manages the key, and `hermes mcp
+remove` is the matching uninstall. The installer used to hand-edit config.yaml
+with a regex merge of `mcp_servers:`; that code is gone.
 
 Safe by default: --dry-run prints the plan; refuses to overwrite user skill
 files unless --force.
@@ -8,15 +18,9 @@ from __future__ import annotations
 
 import argparse
 import os
-import re
 import shutil
 import sys
 from pathlib import Path
-
-try:
-    import yaml  # type: ignore
-except ImportError:  # pragma: no cover - optional
-    yaml = None
 
 
 def product_root() -> Path:
@@ -39,103 +43,57 @@ def references_source() -> Path:
     return product_root() / "references"
 
 
-def build_mcp_block(python_bin: str, product: Path) -> dict:
-    # Zero-install: PYTHONPATH injection (works even if product dir is noexec).
-    return {
-        "command": python_bin,
-        "args": ["-m", "drafthouse.mcp_server"],
-        "env": {
-            "DRAFTHOUSE_ROOT": str(product),
-            "PYTHONPATH": str(product / "src"),
-        },
-        "description": "Drafthouse design verify + lint MCP for Hermes",
-    }
+def mcp_shim(product: Path) -> Path:
+    return product / "bin" / "drafthouse-mcp"
 
 
-def render_yaml_snippet(python_bin: str, product: Path) -> str:
-    lines = ["# Add under ~/.hermes/config.yaml  (mcp_servers: -> drafthouse:)"]
-    lines += _mcp_server_entry(python_bin, product)
-    lines += _admin_lock_block()
-    return "\n".join(lines) + "\n"
+# The top-level `drafthouse:` block documents the default design system and the
+# gate flags the skills read. This is a single, stable, top-level key — never a
+# regex merge of an existing `mcp_servers:` map.
+ADMIN_BLOCK = """\
+drafthouse:
+  design_system: default
+  verify:
+    enabled: true
+    preemit_5dim: true
+    lint_on_write: true
+    max_correct_rounds: 3
+    ship_requires_p0_clear: true
+    vision_gate: false
+  references:
+    enabled: true
+    catalog: auto  # copies under ~/.hermes/design-systems/drafthouse/references
+"""
 
 
-def _mcp_server_entry(python_bin: str, product: Path) -> list[str]:
-    """The drafthouse entry for mcp_servers. No header, for insertion under an existing map."""
-    block = build_mcp_block(python_bin, product)
-    lines = [
-        "mcp_servers:",
-        "  drafthouse:",
-        f"    command: {block['command']}",
-        "    args:",
-    ]
-    for a in list(block.get("args") or []):
-        lines.append(f"      - {a}")
-    lines += [
-        "    env:",
-        f"      DRAFTHOUSE_ROOT: {block['env']['DRAFTHOUSE_ROOT']}",
-        f"      PYTHONPATH: {block['env']['PYTHONPATH']}",
-        f"    description: {json_quote(block['description'])}",
-    ]
-    return lines
+def mcp_add_command(product: Path) -> str:
+    """The exact command the user runs to register the MCP server."""
+    shim = mcp_shim(product)
+    return (
+        f"hermes mcp add drafthouse "
+        f"--command {shim} "
+        f"--env DRAFTHOUSE_ROOT={product} "
+        f"--env PYTHONPATH={product / 'src'}"
+    )
 
 
-def _admin_lock_block() -> list[str]:
-    return [
-        "",
-        "drafthouse:",
-        "  design_system: default",
-        "  verify:",
-        "    enabled: true",
-        "    preemit_5dim: true",
-        "    lint_on_write: true",
-        "    max_correct_rounds: 3",
-        "    ship_requires_p0_clear: true",
-        "    vision_gate: false",
-        "  references:",
-        "    enabled: true",
-        "    catalog: auto  # copies under ~/.hermes/design-systems/drafthouse/references",
-    ]
+def write_admin_block(config_path: Path, dry_run: bool) -> str:
+    """Write or refresh the top-level `drafthouse:` admin block.
 
-
-def json_quote(s: str) -> str:
-    return '"' + s.replace('"', '\\"') + '"'
-
-
-def merge_hermes_config(config_path: Path, python_bin: str, product: Path, dry_run: bool) -> str:
-    if not config_path.exists():
-        action = f"would create {config_path}" if dry_run else f"created {config_path}"
-        if not dry_run:
-            config_path.parent.mkdir(parents=True, exist_ok=True)
-            config_path.write_text(render_yaml_snippet(python_bin, product), encoding="utf-8")
-        return action
-
-    text = config_path.read_text(encoding="utf-8")
-    if "mcp_servers:" in text and "drafthouse:" in text and "DRAFTHOUSE_ROOT" in text:
-        return f"{config_path} already contains drafthouse MCP block (skipped)"
-
-    entry_lines = _mcp_server_entry(python_bin, product)[1:]  # drop the mcp_servers header
-    # Insert the drafthouse entry into the existing top-level mcp_servers map so
-    # existing servers are not shadowed by a duplicate key.
-    m = re.search(r"^mcp_servers:\s*$\n((?:[ \t]+\S.*\n)*)(?=\S|\Z)", text, re.M)
-    if m:
-        addition = "\n".join(entry_lines) + "\n"
-        if dry_run:
-            return f"would insert drafthouse entry into mcp_servers in {config_path}"
-        backup = config_path.with_suffix(config_path.suffix + ".bak.drafthouse")
-        shutil.copy2(config_path, backup)
-        insert_at = m.start(1) + len(m.group(1))
-        config_path.write_text(text[:insert_at] + addition + text[insert_at:], encoding="utf-8")
-        return f"inserted drafthouse entry into mcp_servers in {config_path} (backup: {backup.name})"
-
-    # No mcp_servers map yet: append a clearly marked section — safest without a YAML dependency.
-    marker = "# --- drafthouse (managed) ---"
-    addition = f"\n{marker}\n" + "\n".join(_mcp_server_entry(python_bin, product)) + "\n" + "\n".join(_admin_lock_block()) + "\n"
+    Idempotent: if a `drafthouse:` top-level block already exists it is left
+    alone (user may have tuned values). Only written when missing.
+    """
+    if config_path.exists():
+        text = config_path.read_text(encoding="utf-8")
+        if "\ndrafthouse:" in text or text.startswith("drafthouse:"):
+            return f"{config_path} already has a `drafthouse:` block (left as-is)"
     if dry_run:
-        return f"would append drafthouse MCP block to {config_path}"
-    backup = config_path.with_suffix(config_path.suffix + ".bak.drafthouse")
-    shutil.copy2(config_path, backup)
-    config_path.write_text(text.rstrip() + addition, encoding="utf-8")
-    return f"appended drafthouse block to {config_path} (backup: {backup.name})"
+        return f"would write `drafthouse:` block to {config_path}"
+    config_path.parent.mkdir(parents=True, exist_ok=True)
+    existing = config_path.read_text(encoding="utf-8") if config_path.exists() else ""
+    suffix = "" if not existing or existing.endswith("\n") else "\n"
+    config_path.write_text(existing + suffix + "\n" + ADMIN_BLOCK, encoding="utf-8")
+    return f"wrote `drafthouse:` block to {config_path}"
 
 
 def copy_tree(src: Path, dst: Path, force: bool, dry_run: bool) -> list[str]:
@@ -160,54 +118,82 @@ def copy_tree(src: Path, dst: Path, force: bool, dry_run: bool) -> list[str]:
     return notes
 
 
+def uninstall_skills(home: Path, dry_run: bool) -> list[str]:
+    notes: list[str] = []
+    skills_dst = home / "skills"
+    for name in (
+        "drafthouse-design-verify",
+        "drafthouse-design-systems",
+        "drafthouse-design-references",
+        "drafthouse-design-vision",
+    ):
+        target = skills_dst / name
+        if not target.exists():
+            notes.append(f"absent: {target}")
+            continue
+        if dry_run:
+            notes.append(f"would remove: {target}")
+            continue
+        shutil.rmtree(target)
+        notes.append(f"removed: {target}")
+    ds_dst = home / "design-systems" / "drafthouse"
+    if ds_dst.exists():
+        notes.append(f"note: manually remove {ds_dst} if you no longer use it")
+    notes.append("note: run `hermes mcp remove drafthouse` to unregister the MCP server")
+    return notes
+
+
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Install Drafthouse into a Hermes home")
+    parser = argparse.ArgumentParser(
+        description="Install Drafthouse skills into a Hermes home (no YAML surgery)"
+    )
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--force", action="store_true", help="Overwrite existing skill files")
     parser.add_argument("--hermes-home", default=None)
-    parser.add_argument("--skip-config", action="store_true")
-    parser.add_argument("--skip-skills", action="store_true")
+    parser.add_argument("--skip-admin-block", action="store_true")
+    parser.add_argument("--uninstall", action="store_true", help="Remove installed drafthouse skills")
     args = parser.parse_args(argv)
 
     product = product_root()
     home = Path(args.hermes_home).expanduser() if args.hermes_home else hermes_home()
-    skills_dst = home / "skills"
-    ds_dst = home / "design-systems" / "drafthouse"
-    python_bin = sys.executable
 
     print(f"drafthouse product: {product}")
     print(f"hermes home:        {home}")
-    print(f"mode:               {'dry-run' if args.dry_run else 'install'}")
+    print(f"mode:               {'uninstall' if args.uninstall else ('dry-run' if args.dry_run else 'install')}")
     print()
 
-    if not args.skip_skills:
-        print("== skills ==")
-        for note in copy_tree(skills_source(), skills_dst, force=args.force, dry_run=args.dry_run):
+    if args.uninstall:
+        for note in uninstall_skills(home, dry_run=args.dry_run):
             print(f"  {note}")
-        print("== design-systems ==")
-        for note in copy_tree(design_systems_source(), ds_dst, force=args.force, dry_run=args.dry_run):
-            print(f"  {note}")
-        print("== references catalog ==")
-        ref_dst = ds_dst / "references"
-        for note in copy_tree(references_source(), ref_dst, force=args.force, dry_run=args.dry_run):
-            print(f"  {note}")
-
-    if not args.skip_config:
-        print("== hermes config ==")
-        config_path = home / "config.yaml"
-        note = merge_hermes_config(config_path, python_bin, product, dry_run=args.dry_run)
-        print(f"  {note}")
         print()
-        print("YAML reference:")
-        print(render_yaml_snippet(python_bin, product))
+        print("Done. The admin `drafthouse:` block and the MCP registration are yours to keep or remove:")
+        print(f"  hermes mcp remove drafthouse")
+        return 0
+
+    skills_dst = home / "skills"
+    ds_dst = home / "design-systems" / "drafthouse"
+
+    print("== skills ==")
+    for note in copy_tree(skills_source(), skills_dst, force=args.force, dry_run=args.dry_run):
+        print(f"  {note}")
+    print("== design-systems ==")
+    for note in copy_tree(design_systems_source(), ds_dst, force=args.force, dry_run=args.dry_run):
+        print(f"  {note}")
+    print("== references catalog ==")
+    ref_dst = ds_dst / "references"
+    for note in copy_tree(references_source(), ref_dst, force=args.force, dry_run=args.dry_run):
+        print(f"  {note}")
+
+    if not args.skip_admin_block:
+        print("== admin config ==")
+        config_path = home / "config.yaml"
+        print(f"  {write_admin_block(config_path, dry_run=args.dry_run)}")
 
     print()
-    print("Next:")
-    print("  1. Make wrappers executable:  chmod +x bin/drafthouse bin/drafthouse-mcp")
-    print("  2. Put bin/ on PATH (or call by absolute path)")
-    print("  3. Restart Hermes / new conversation so skills + MCP load")
-    print("  4. In Hermes:  /drafthouse-design-verify   or ask to lint an HTML artifact")
-    print("  Optional pip install if you want the `drafthouse` console script globally.")
+    print("Next (MCP server — one command, no YAML editing):")
+    print(f"  {mcp_add_command(product)}")
+    print("  hermes mcp test drafthouse")
+    print("  restart Hermes / start a new session so the skills + MCP load")
     return 0
 
 

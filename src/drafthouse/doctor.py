@@ -197,17 +197,18 @@ def run_doctor() -> DoctorReport:
             )
         )
 
-    # MCP config fragment
+    # MCP config fragment (written by `hermes mcp add drafthouse`)
     config = home / "config.yaml"
-    if config.exists() and "drafthouse" in config.read_text(encoding="utf-8", errors="replace"):
-        report.checks.append(Check("mcp-config", "ok", "drafthouse block present in config.yaml"))
+    config_text = config.read_text(encoding="utf-8", errors="replace") if config.exists() else ""
+    if "drafthouse" in config_text:
+        report.checks.append(Check("mcp-config", "ok", "drafthouse registered in config.yaml"))
     else:
         report.checks.append(
             Check(
                 "mcp-config",
                 "warn",
-                "no drafthouse MCP block in HERMES_HOME config",
-                "python3 -m drafthouse.install_hermes (writes MCP + verify config)",
+                "no drafthouse MCP entry in HERMES_HOME config",
+                "hermes mcp add drafthouse --command <product>/bin/drafthouse-mcp",
             )
         )
 

@@ -1,5 +1,25 @@
 # Changelog
 
+## 2.0.0 — 2026-10-06
+
+### Changed (breaking)
+- **Installer no longer edits `mcp_servers` in `config.yaml`.** The old
+  `merge_hermes_config` regex merge is gone; the installer now copies the
+  skills and writes only the top-level `drafthouse:` admin block, then prints
+  the `hermes mcp add drafthouse --command …/bin/drafthouse-mcp` command for
+  you to run. MCP registration is the native `hermes mcp` path, so validation
+  and `hermes mcp remove` work as expected.
+- Existing installs that have a hand-edited `mcp_servers.drafthouse` block
+  still work (Hermes reads it fine); just run `hermes mcp remove drafthouse`
+  and the new `hermes mcp add` command to move onto the native path.
+
+### Added
+- **Uninstall:** `python3 -m drafthouse.install_hermes --uninstall` removes
+  only the four `drafthouse-design-*` skills and prints the `hermes mcp remove`
+  matching command.
+- **Install docs:** README quick-start now shows the three-line install path.
+- **Doctor:** the MCP-config check's fix hint now points at `hermes mcp add`.
+
 ## 1.0.2 — 2026-10-04
 
 ### Added

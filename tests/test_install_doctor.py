@@ -13,37 +13,28 @@ os.environ["DRAFTHOUSE_ROOT"] = str(ROOT)
 os.environ["PYTHONPATH"] = str(ROOT / "src")
 
 from drafthouse.doctor import run_doctor  # noqa: E402
-from drafthouse.install_hermes import merge_hermes_config, render_yaml_snippet  # noqa: E402
+from drafthouse.install_hermes import (  # noqa: E402
+    ADMIN_BLOCK,
+    mcp_add_command,
+    uninstall_skills,
+    write_admin_block,
+)
 
 
-class InstallerIdempotencyTests(unittest.TestCase):
-    def test_merge_twice_single_block(self) -> None:
-        with tempfile.TemporaryDirectory() as tmp:
-            home = Path(tmp)
-            config = home / "config.yaml"
-            config.write_text("model: default\n", encoding="utf-8")
-            product = ROOT
-            first = merge_hermes_config(config, sys.executable, product, dry_run=False)
-            self.assertIn("appended", first.lower())
-            text1 = config.read_text(encoding="utf-8")
-            self.assertEqual(text1.count("drafthouse.mcp_server"), 1)
-            second = merge_hermes_config(config, sys.executable, product, dry_run=False)
-            self.assertIn("skip", second.lower())
-            text2 = config.read_text(encoding="utf-8")
-            self.assertEqual(text2.count("drafthouse.mcp_server"), 1)
-            self.assertEqual(text2.count("DRAFTHOUSE_ROOT"), 1)
-
-    def test_create_when_missing(self) -> None:
+class InstallerTests(unittest.TestCase):
+    def test_admin_block_written_once(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             config = Path(tmp) / "config.yaml"
-            note = merge_hermes_config(config, sys.executable, ROOT, dry_run=False)
-            self.assertTrue(config.exists())
-            self.assertIn("drafthouse", config.read_text(encoding="utf-8"))
-            self.assertIn("create", note.lower())
+            config.write_text("model: default\n", encoding="utf-8")
+            first = write_admin_block(config, dry_run=False)
+            self.assertIn("wrote", first)
+            self.assertIn("drafthouse:", config.read_text(encoding="utf-8"))
+            second = write_admin_block(config, dry_run=False)
+            self.assertIn("already has", second)
+            self.assertEqual(config.read_text(encoding="utf-8").count("\ndrafthouse:"), 1)
 
-    def test_insert_under_existing_mcp_servers_map(self) -> None:
-        # A config that already has an mcp_servers map must have drafthouse
-        # inserted into it, not a second top-level mcp_servers: key.
+    def test_admin_block_does_not_touch_mcp_servers(self) -> None:
+        # The installer must never mutate an existing mcp_servers map.
         with tempfile.TemporaryDirectory() as tmp:
             config = Path(tmp) / "config.yaml"
             config.write_text(
@@ -51,35 +42,57 @@ class InstallerIdempotencyTests(unittest.TestCase):
                 "mcp_servers:\n"
                 "  aws-mcp:\n"
                 "    command: /usr/bin/uvx\n"
-                "  cloudflare-docs:\n"
-                "    url: https://example/mcp\n"
                 "platform_toolsets:\n"
                 "  cli:\n"
                 "    - hermes-cli\n",
                 encoding="utf-8",
             )
-            note = merge_hermes_config(config, sys.executable, ROOT, dry_run=False)
-            self.assertIn("insert", note.lower())
+            write_admin_block(config, dry_run=False)
             text = config.read_text(encoding="utf-8")
             self.assertEqual(len(re.findall(r"^mcp_servers:", text, re.M)), 1)
-            mcp_body = text.split("mcp_servers:", 1)[1].split("\nplatform_toolsets:")[0]
-            self.assertIn("\n  drafthouse:", mcp_body)
             self.assertIn("aws-mcp", text)
             self.assertIn("platform_toolsets", text)
-            self.assertEqual(text.count("drafthouse.mcp_server"), 1)
+            self.assertNotIn("drafthouse.mcp_server", text)
 
-    def test_dry_run_writes_nothing(self) -> None:
+    def test_admin_block_creates_config_when_missing(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             config = Path(tmp) / "config.yaml"
-            note = merge_hermes_config(config, sys.executable, ROOT, dry_run=True)
-            self.assertFalse(config.exists())
-            self.assertIn("would", note.lower())
+            write_admin_block(config, dry_run=False)
+            self.assertTrue(config.exists())
+            self.assertIn("drafthouse:", config.read_text(encoding="utf-8"))
 
-    def test_yaml_snippet_contains_pythonpath(self) -> None:
-        snippet = render_yaml_snippet(sys.executable, ROOT)
-        self.assertIn("PYTHONPATH", snippet)
-        self.assertIn("drafthouse.mcp_server", snippet)
-        self.assertIn("vision_gate", snippet)
+    def test_admin_block_dry_run_writes_nothing(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            config = Path(tmp) / "config.yaml"
+            note = write_admin_block(config, dry_run=True)
+            self.assertFalse(config.exists())
+            self.assertIn("would", note)
+
+    def test_mcp_add_command_points_at_shim(self) -> None:
+        cmd = mcp_add_command(ROOT)
+        self.assertIn(f"{ROOT / 'bin' / 'drafthouse-mcp'}", cmd)
+        self.assertIn("DRAFTHOUSE_ROOT", cmd)
+        self.assertIn("PYTHONPATH", cmd)
+
+    def test_admin_block_has_expected_keys(self) -> None:
+        self.assertIn("design_system: default", ADMIN_BLOCK)
+        self.assertIn("vision_gate", ADMIN_BLOCK)
+        self.assertIn("catalog: auto", ADMIN_BLOCK)
+
+    def test_uninstall_removes_drafthouse_skills_only(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            home = Path(tmp)
+            for name in (
+                "drafthouse-design-verify",
+                "drafthouse-design-systems",
+                "other-skill",
+            ):
+                (home / "skills" / name).mkdir(parents=True)
+            notes = uninstall_skills(home, dry_run=False)
+            self.assertFalse((home / "skills" / "drafthouse-design-verify").exists())
+            self.assertFalse((home / "skills" / "drafthouse-design-systems").exists())
+            self.assertTrue((home / "skills" / "other-skill").exists())
+            self.assertTrue(any("hermes mcp remove drafthouse" in n for n in notes))
 
 
 class DoctorTests(unittest.TestCase):
