@@ -68,9 +68,10 @@ class InstallerTests(unittest.TestCase):
             self.assertFalse(config.exists())
             self.assertIn("would", note)
 
-    def test_mcp_add_command_points_at_shim(self) -> None:
-        cmd = mcp_add_command(ROOT)
-        self.assertIn(f"{ROOT / 'bin' / 'drafthouse-mcp'}", cmd)
+    def test_mcp_add_command_points_at_python_module(self) -> None:
+        cmd = mcp_add_command(ROOT, "/usr/bin/python3")
+        self.assertIn("-m drafthouse.mcp_server", cmd)
+        self.assertIn("/usr/bin/python3", cmd)
         self.assertIn("DRAFTHOUSE_ROOT", cmd)
         self.assertIn("PYTHONPATH", cmd)
 

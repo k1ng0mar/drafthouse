@@ -38,10 +38,10 @@ Simplest-to-install is three lines. Clone, install the skills, register the MCP 
 ```bash
 git clone https://github.com/k1ng0mar/drafthouse && cd drafthouse
 python3 -m drafthouse.install_hermes          # copies skills + writes the drafthouse: admin block
-hermes mcp add drafthouse --command "$PWD/bin/drafthouse-mcp" --env DRAFTHOUSE_ROOT="$PWD" --env PYTHONPATH="$PWD/src"
+hermes mcp add drafthouse --command "$(which python3)" --args -m drafthouse.mcp_server --env DRAFTHOUSE_ROOT="$PWD" --env PYTHONPATH="$PWD/src"
 ```
 
-The installer prints the exact `hermes mcp add` command for your paths. It does not hand-edit your `mcp_servers:` map; the MCP registration goes through the native `hermes mcp` command, and `hermes mcp remove drafthouse` is the matching uninstall. To remove the installed skills later:
+Run `python3 -m drafthouse.install_hermes --dry-run` first if you want to read the plan. The installer prints the exact `hermes mcp add` command for your paths and uses `python -m drafthouse.mcp_server` directly so it works on noexec and FUSE mounts where the `bin/` shims can't be made executable. It does not hand-edit your `mcp_servers:` map; the MCP registration goes through the native `hermes mcp` command, and `hermes mcp remove drafthouse` is the matching uninstall. To remove the installed skills later:
 
 ```bash
 python3 -m drafthouse.install_hermes --uninstall

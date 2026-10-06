@@ -44,6 +44,7 @@ def references_source() -> Path:
 
 
 def mcp_shim(product: Path) -> Path:
+    """Convenience wrapper for filesystems that allow exec bits."""
     return product / "bin" / "drafthouse-mcp"
 
 
@@ -66,12 +67,16 @@ drafthouse:
 """
 
 
-def mcp_add_command(product: Path) -> str:
-    """The exact command the user runs to register the MCP server."""
-    shim = mcp_shim(product)
+def mcp_add_command(product: Path, python_bin: str) -> str:
+    """The exact command the user runs to register the MCP server.
+
+    Uses `python -m drafthouse.mcp_server` rather than the bin/ shim so it
+    works on noexec and FUSE mounts (gdrive, network shares) where the
+    bin/ shim can't be made executable.
+    """
     return (
         f"hermes mcp add drafthouse "
-        f"--command {shim} "
+        f"--command {python_bin} --args -m drafthouse.mcp_server "
         f"--env DRAFTHOUSE_ROOT={product} "
         f"--env PYTHONPATH={product / 'src'}"
     )
@@ -191,7 +196,7 @@ def main(argv: list[str] | None = None) -> int:
 
     print()
     print("Next (MCP server — one command, no YAML editing):")
-    print(f"  {mcp_add_command(product)}")
+    print(f"  {mcp_add_command(product, sys.executable)}")
     print("  hermes mcp test drafthouse")
     print("  restart Hermes / start a new session so the skills + MCP load")
     return 0
